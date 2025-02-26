@@ -50,5 +50,4 @@ Project maintainers will review all reports and take necessary actions to mainta
 
 ## Attribution
 
-This Code of Conduct is inspired by the Contributor Covenant v2.1 and as well as the 
-International Documentation found at http://www.idocde.net/pages/35.
+This Code of Conduct is inspired by the Contributor Covenant v2.1 found at https://www.contributor-covenant.org/version/2/1/code_of_conduct/ and as well as the International Documentation found at http://www.idocde.net/pages/35.
