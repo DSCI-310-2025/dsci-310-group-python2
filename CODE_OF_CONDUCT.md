@@ -1,5 +1,4 @@
-# Code of Conduct
- 
+
 ## Statement on Diversity and Inclusivity
 
 Our group is committed to fostering an open, welcoming, and diverse environment for everyone involved in this project. This group consists of individuals with different unique backgrounds, and we believe that creating a safe and inclusive space will help each of us contribute in a meaningful way. Community built on support, collaboration and respect will always be fertile soil for the best ideas to flourish. Discrimination, harassment, or exclusion of any kind will not be tolerated.
@@ -14,7 +13,8 @@ Members of the project are expected to:
 * Refrain from discriminatory, harassing, or disruptive behavior.
 * Engage in discussion with an open mind. 
 
-## Unacceptable Behaviour
+
+## Unaceptable Behaviour
 
 Unacceptable behavior includes, but is not limited to:
 * Harassment, intimidation, or discrimination based on race, gender, sexual orientation, disability, religion, or any other individual characteristics.
