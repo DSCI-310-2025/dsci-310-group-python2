@@ -1,53 +1,52 @@
-# Community Code of Conduct
+Statement on Diversity and Inclusivity
 
-## Purpose
+Our group is  committed to fostering an open, welcoming, diverse 
+environment for everyone involved in this project. This group consists of 
+individuals with different unique backgrounds, and we believe that 
+creating safe and inclusive space will help each of us to contribute in a 
+meaningful way. Community build on support, collaboration and respect will 
+always be a fertile soil for the best ideas to flourish. Discrimination, 
+harrassment, or exclusion of any kind will not be tolerated.
 
-Our project is committed to fostering an inclusive, collaborative, and respectful environment where everyone—regardless of background or experience—feels welcome to contribute. This Code of Conduct sets expectations for behavior and provides guidelines for maintaining a positive community.
+Expected Behaviour
 
-## Diversity and Inclusivity
+Members of the project are expected to: 
+	- Be respectful and considerate in all communications 
+	- Be mindful of the other's background. For instance, some 
+	people's first langauge is not english. 
+	- Foster inclusive and supportive environment when collaborating 
+	with others. 
+	- Always provide constructive feedback in a respectful manner.
+	- Refrain from discriminatory, harassing, or disruptive behavior.
+	- Engage in discussion with an open mind. 
 
-We celebrate diversity and are committed to creating an environment where all individuals feel valued and respected, regardless of race, ethnicity, gender identity, sexual orientation, ability, age, religion, or any other characteristic.
-We encourage contributions from individuals with different perspectives and experiences, as this enriches our project and promotes fairness in data science practices.
+Unaceptable Behaviour
 
-## Expected Behaviours
+Unacceptable behavior includes, but is not limited to:
+ 	- Harassment, intimidation, or discrimination based on race, 
+	gender, sexual orientation, disability, religion, or any other 
+	individual characteristics.
+	- Hate speech, threats, or offensive language.
+	- The sharing of inappropriate content in coimmunication channels 
+        - Plagiarizing work.
+	- Personal attacks and bullying. 
 
-All contributors are expected to:
+Consequences for unacceptable behaviour
 
-- Treat others with respect, kindness, and professionalism.
-- Engage in constructive discussions, providing helpful feedback.
-- Respect different viewpoints and be open to learning from others.
-- Follow ethical data practices, ensuring transparency, fairness, and accountability.
-- Properly document and credit sources of data, code, and research.
+Violation of the Code of Conduct will result in: 
 
-## Unacceptable Behaviour
+	- Formal written warning from the project members. 
+	- Temporary or permament suspension from the project 
+	- Removal from the repository and communication channels 
+	- Reporting to course instructor and coordinator. 
+	
+Reporting the harmful behaviour
 
-The following behaviors will not be tolerated:
+If you witness or experience unacceptable behavior, please report it as 
+soon as possible to Sayana Imash at saituumi@student.ubc.ca. Reports will 
+be handled with confidentiality and urgency. All the concerns will be 
+communicated with the rest of the group as well as the course instructor 
+depending on the severity of the issue. 
 
-- Harassment, discrimination, or offensive comments related to identity, background, or experience.
-- Personal attacks, threats, intimidation, or any form of hostility.
-- Deliberate misrepresentation, falsification of data, or plagiarism.
-- The release of private, sensitive, or personally identifiable information without proper consent.
-- Sabotaging the project, spamming, or engaging in any behavior that disrupts collaboration.
 
-## Consequences of Unacceptable Behaviour
-
-Violations of this Code of Conduct may result in:
-
-1. A warning from project maintainers.
-2. Temporary or permanent suspension from contributing.
-3. Reporting the behavior to relevant organizations or institutions, if necessary.
-4. Removal of inappropriate contributions from the repository.
-
-## Reporting Violations
-
-If you experience or witness behavior that violates this Code of Conduct:
-
-- Contact the project maintainers via issues.
-- Provide a clear description of the incident, including relevant context and any supporting evidence.
-
-All reports will be handled confidentially, and appropriate actions will be taken based on the severity of the situation.
-Project maintainers will review all reports and take necessary actions to maintain a respectful community. If a violation occurs, decisions will be made based on the severity of the behavior and previous conduct.
-
-## Attribution
-
-This Code of Conduct is inspired by the Contributor Covenant v2.1 found at https://www.contributor-covenant.org/version/2/1/code_of_conduct/ and as well as the International Documentation found at http://www.idocde.net/pages/35.
+ 
