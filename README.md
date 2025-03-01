@@ -31,7 +31,7 @@ Go to http://localhost:8888/ and make changes via the jupyter notebook
 
 - MIT License
 
-#### Contributers
+#### Contributors
 
 - Danny Pirouz
 - William Ho
