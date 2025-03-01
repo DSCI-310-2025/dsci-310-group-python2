@@ -1,10 +1,10 @@
 FROM jupyter/base-notebook:python-3.11
 
 ### download libraries to use for analysis
-# RUN pip install pandas==2.2.3
-# RUN pip install matplotlib==3.10.1
-# RUN pip install seaborn==0.13.2
-# RUN pip install scikit-learn==1.6.1
+RUN pip install pandas==2.2.3
+RUN pip install matplotlib==3.10.1
+RUN pip install seaborn==0.13.2
+RUN pip install scikit-learn==1.6.1
 
 ### copy local files to jupyter instance
 COPY . /home/jovyan/
