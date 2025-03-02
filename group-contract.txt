@@ -1,6 +1,6 @@
 Team members: Sayana Imash, William Ho, Arad Parshad Sabet, Danny Pirouz
 
-Work Distribution:  Work will be distributed based on team members' 
+Work Distribution: Work will be distributed based on team members' 
 expertise, preferences, and availability to ensure fairness and equal 
 contribution. Tasks will be assigned collaboratively during meetings, and 
 members will have the opportunity to request changes or reassignments if 
@@ -9,16 +9,16 @@ clear deadlines.
  
 Expected Work Hours and communication: Each team member is expected to 
 contribute a minimum of 1 hour of meeting time and 3 hours of personal 
-work  per week depending on the workload. 
+work per week depending on the workload. 
 Members should communicate any availability or conflict issues beforehand 
 in a clear and respectful manner. All the major communication happens via 
 Discord channel or email.
  
-Meetings and scheduling:   Meetings are held online once a week. The date 
+Meetings and scheduling: Meetings are held online once a week. The date 
 of the meeting is scheduled beforehand. Group members are expected to 
 attend every meeting or communicate absence in a timely manner. 
 
-Quality of work:  Each team member is expected to produce high-quality 
+Quality of work: Each team member is expected to produce high-quality 
 work with equal contribution. 
 Code and written reports should follow agreed-upon formatting and 
 documentation standards.
@@ -35,10 +35,10 @@ Team will gather at least a day before to do final review of the project
 and submission
  
 Breach of Contract: If a team member consistently fails to contribute or 
-communicate, following procedure will be applied: 
+communicate, the following procedure will be applied: 
 	A private discussion to address concerns. 
 	A group discussion to find a resolution.
 	If the consensus have not been reached, the matter will be 
-	 forwarded to  the instructor
+	 forwarded to the instructor
 
 
