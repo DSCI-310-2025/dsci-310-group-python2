@@ -6,10 +6,10 @@ The goal of this project is to determine whether a given random bank note can be
 
 ### Steps to Run the Analysis
 
-First clone the repository: <br>
+First, run a git terminal and clone the repository: <br>
 `git clone https://github.com/DSCI-310-2025/dsci-310-group-python2`
 
-Run a git terminal and change the directory to the cloned repository: <br>
+Change the current directory to the cloned repository: <br>
 `cd dsci-310-group-python2`
 
 Build a new docker instance: <br>
@@ -18,14 +18,16 @@ Build a new docker instance: <br>
 Run the docker instance: <br>
 `docker run -it --rm -v "${PWD}":/home/joyvan -p 8888:8888 bill-analysis`
 
-Go to http://localhost:8888/ and make changes via the jupyter notebook
+Go to http://localhost:8888/ and run the analysis via the jupyter notebook
 
 #### List of Dependencies Needed to Run
 
-- pandas 2.2.3
-- matplotlib 3.10.1
-- seaborn 0.13.2
-- scikit-learn==1.6.1
+- python (version 3.11)
+- jupyter (version 4.0.7)
+- pandas (version 2.2.3)
+- matplotlib (version 3.10.1)
+- seaborn (version 0.13.2)
+- scikit-learn (version 1.6.1)
 
 #### Licenses
 
