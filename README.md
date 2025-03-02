@@ -2,7 +2,7 @@
 
 ## Summary
 
-The goal of this project is to determine whether a given random bank note can be accurately classified as authentic or fake. Through the use of a training set extracted from this dataset, we were able to create a KNN classification model and test our testing set to determine our accuracy. We then ran our unknown label through our model and created visualizations to understand our bank note better.
+The goal of this project is to determine whether a number of random bank notes can be accurately classified as authentic or fake. Through the use of a training set extracted from this dataset, we were able to create a KNN classification model and test our testing set to determine our accuracy. We then ran our unknown bank notes through our model and created visualizations to understand our bank notes better.
 
 ### Steps to Run the Analysis
 
