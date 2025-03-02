@@ -1,3 +1,5 @@
+### use python 3.11 with the jupyter notebook
+### note: this docker library also installs jupyter 4.0.7
 FROM jupyter/base-notebook:python-3.11
 
 ### download libraries to use for analysis

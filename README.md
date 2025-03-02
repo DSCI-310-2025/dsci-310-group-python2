@@ -1,4 +1,4 @@
-# Authentic vs Fake Bank Note Classification
+# Authentic vs Fake Banknote Classification
 
 ## Summary
 
@@ -18,7 +18,7 @@ Build a new docker instance: <br>
 Run the docker instance: <br>
 `docker run -it --rm -v "${PWD}":/home/joyvan -p 8888:8888 bill-analysis`
 
-Go to http://localhost:8888/ and run the analysis via the jupyter notebook
+Go to http://localhost:8888/ and run the analysis file `bill-classification-analysis.ipynb`
 
 #### List of Dependencies Needed to Run
 
