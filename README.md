@@ -28,6 +28,7 @@ Go to http://localhost:8888/ and run the analysis file `bill-classification-anal
 - matplotlib (version 3.10.1)
 - seaborn (version 0.13.2)
 - scikit-learn (version 1.6.1)
+- ucimlrepo (version 0.0.7)
 
 #### Licenses
 
