@@ -31,7 +31,7 @@ Go to http://localhost:8888/ and run the analysis file `bill-classification-anal
 
 #### Licenses
 
-- MIT License
+This project is licensed under the licenses specified in `LICENSE.md`. This includes the `MIT License` and the `CC BY-NC-ND 4.0 License`.
 
 #### Contributors
 
