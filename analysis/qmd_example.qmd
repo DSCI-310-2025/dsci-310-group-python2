@@ -1,0 +1,129 @@
+---
+title: "Authentic vs Fake Banknote Classification"
+author: "Willian Ho, Sayana Imash, Danny Pirouz, & Arad Sabet"
+format: html
+editor: source
+execute:
+  echo: false
+toc: true
+toc-depth: 3
+bibliography: references.bib
+---
+# 
+
+```{python}
+import pandas as pd
+from IPython.display import Markdown, display
+from tabulate import tabulate
+
+analysis_results = "../results/analysis/"
+eda_results = "../results/eda/"
+```
+
+## Summary
+
+### Background information
+
+Counterfeit currency is a global challenge that poses great threat to financial institutions, governments, and even individuals. To combat this, central banks and law enforcement agencies invest billions of dollars annually in anti-counterfeiting measures, such as watermarks, holograms, and security threads. However, while these methods help deter fraud, rapid advancements in printing technology and reproduction techniques have made counterfeiting even more complex and harder to detect [@US_Banknote_Counterfeits].
+
+In Canada, for example, the Department of Justice reports that counterfeit money is one of the most common forms of financial fraud that is continuously adapting to improved security features and law enforcement tactics [@Canada_Fraud]. This ongoing challenge highlights the urgent need for more advanced detection methods that can quickly and accurately identify fraudulent banknotes. One of the most promising solutions is the use of automated detection systems powered by image processing and machine learning. By improving pattern recognition and statistical analysis, these models provide high precision, speed, and efficiency, making them a powerful tool in combating financial fraud [@Fraud_Prevention].
+
+### Research Question
+
+In this project we are trying to answer the question whether a machine learning model, specifically K-Nearest Neighbors (KNN), can effectively classify banknotes as genuine or counterfeit based on numerical image features. 
+
+### The dataset
+
+The dataset we used for this project is called "Banknote Authentication UCI data", and it was taken from the UCI Machine Learning Repository. This dataset is designed to distinguish between genuine and counterfeit banknotes using features extracted from their images. It comprises of 1372 individual data points that are characterized by four continuous features: variance, skewness, curtosis, entropy, and class. The target variable "class" is a binary value of 1 (counterfeit banknote) or 0 (genuine banknote). These features were extracted using wavelet transform tools applied to 400x400 pixel grayscale images captured by an industrial camera [@Banknote_Authentication]. 
+
+## Methods
+
+The Python programming language [@Python]
+and the following Python packages were used to perform the analysis: 
+
+* pandas [@pandas]
+* matplotlib [@matplotlib]
+* seaborn [@seaborn]
+* Quarto [@Allaire_Quarto_2022]
+* click [@click]
+
+
+## Results
+
+### Exploratory Data Analysis & Visualizations
+
+```{python}
+#| label: tbl-count
+#| tbl-cap: Distribution of Banknote Authentication Notes
+count_table = pd.read_csv(f"{eda_results}BankNote_Authentication_EDA_count_table.csv")
+Markdown(count_table.to_markdown(index = False))
+```
+
+![Distribution of Entropy Grouped by Authenticity](../results/eda/BankNote_Authentication_EDA_entropy.png){#fig-entropy width=90%}
+
+The entropy histograms in @fig-entropy have very similar distributions for authentic and fake bills as they both have their modes around 0. Since the distributions are very similar, it is very unlikely that entropy is a driving factor in determining authentic or fake bills. 
+
+![Distribution of Curtosis Grouped by Authenticity](../results/eda/BankNote_Authentication_EDA_curtosis.png){#fig-curtosis width=90%}
+
+The same can be said for the curtosis histogram (@fig-curtosis) as authentic and fake bills have similar distributions with their modes around 0 as well. Curtosis is also unlikely to be a driving force. 
+
+![Distribution of Variance Grouped by Authenticity](../results/eda/BankNote_Authentication_EDA_variance.png){#fig-variance width=90%}
+
+The variance distributions (@fig-variance) are very different. Both authentic and fake bills have a bell curve distribution with the fake bills having a mode around -2.5 and the authentic bills having a mode around 4. This suggests that variance is a very strong driving force in determining whether a bill is authentic or fake. 
+
+![Distribution of Skewness Grouped by Authenticity](../results/eda/BankNote_Authentication_EDA_skewness.png){#fig-skewness width=90%}
+
+The skewness histograms (@fig-skewness) have somewhat different distributions. The fake bills have their mode at around 2.5 while the authentic bills have their mode at around 8. The distributions overlap quite a bit suggesting that skewness is not as big of a driving factor as variance. These histograms will allow us to understand what we should expect with our unknown bill once the bill is identified. We can use these histograms to see if our expectations line up with the unknown bill.
+
+### Data Analysis: KNN Model
+
+#### Cross validation
+We tried standard scaler but got better results without it.
+
+#### Parameter optimization
+
+
+![KNN Accuracy vs Number of Neighbours](../results/analysis/BankNote_Authentication_Analysis_knn_cv.png){#fig-neighbours width=90%}
+
+Based on the @fig-neighbours graph, even with only one neighbour we are getting the best result. This means we can start by trying to use only one neighbour in our pipeline and try it on the test set.
+
+
+#### Results on the Testing Set
+
+```{python}
+count_table = pd.read_csv(f"{analysis_results}BankNote_Authentication_Analysis_classification_report.csv", index_col=0)
+test_accuracy = float(count_table.loc[['accuracy'], 'f1-score'].iloc[0]) * 100
+positive_cases = int(count_table.loc[['0'], 'support'].iloc[0])
+negative_cases = int(count_table.loc[['1'], 'support'].iloc[0])
+total_cases = positive_cases + negative_cases
+```
+![KNN Accuracy vs Number of Neighbours](../results/analysis/BankNote_Authentication_Analysis_confusion_matrix.png){#fig-confusion_matrix width=90%}
+
+Based on @fig-confusion_matrix, we were able to predict `{python} positive_cases` authentic banknotes and `{python} negative_cases` fake banknotes correctly. 
+```{python}
+#| label: tbl-classification_report
+#| tbl-cap: Distribution of Banknote Authentication Notes
+Markdown(count_table.to_markdown())
+```
+
+@tbl-classification_report further shows this conclusion. We achieved a score of `{python} test_accuracy`%. This means that we have no error, and we are predicting everything right. Every test sample was classified correctly. There are no misclassifications, which implies that the model perfectly distinguishes between the two classes. The classifier achieved **`{python} test_accuracy`% accuracy** on the test set, with perfect precision, recall, and F1-scores for both classes. 
+
+## Discussion
+### Analysis of Results
+
+The classifier perfectly predicted all `{python} positive_cases` real banknotes and `{python} negative_cases` fake banknotes in the test set. This is not what we expected to find. While we did expect our model to do well since our 4 input variables likely play a major role in detecting forged banknotes, we did not expect it to perfectly predict every banknote in the test set.
+
+However, upon further research, this model is fairly consistent with other models. A Gaussian process classifier was able to get 100% accuracy on both the training and test set with only 500 training samples [@Gaussian_Process_Classifier]. A different model using convex optimzation on graphs also managed to achieve an average testing accuracy of 99.03% over 100 randomly generated training sets [@Graph_Optimization]. 
+
+### Future Considerations 
+
+This result suggests that our current model is identifying all the patterns in the dataset and is able to predict whether or not a banknote is forged or not with `{python} test_accuracy`% accuracy. However, this model still needs more testing. We could be overfitting on our available data. Our test set may also not capture all the patterns of a banknote the model might encounter, as it only has `{python} total_cases` samples. This test could have failed to include some rare or outlier patterns the model may encounter if it were tested on a different dataset. It may even be the case that our entire dataset may not be representative of the real world and this could potentially cause our model to perform poorly on unseen data. 
+
+This analysis raises several potential future questions that could evaluate how this model would fare in real world scenarios:
+
+* Would our model still be generalizable for larger or more complex datasets or would it lead to lower accuracy?
+* Which of the 4 features between variance, skewness, kurtosis, and entropy are the most important for authenticating banknotes and by how much?**
+* Is there covariance between the 4 features? Does this covariance make it easier to detect fake banknotes?**
+* What are the patterns that make a counterfeit banknote stand out from a genuine banknote? Could a forged banknote be designed to avoid these patterns and not be detected by the classification model?
+
+## References

@@ -70,7 +70,7 @@ def main(input_path, output_prefix):
     # Generate predictions and evaluation metrics
     y_pred = final_knn.predict(X_test)
     cm = confusion_matrix(y_test, y_pred)
-    report = classification_report(y_test, y_pred)
+    report = pd.DataFrame(classification_report(y_test, y_pred, output_dict=True)).transpose()
 
     # Plot and save the confusion matrix
     plt.figure(figsize=(6, 5))
@@ -83,9 +83,8 @@ def main(input_path, output_prefix):
     plt.close()
 
     # Save the classification report to a text file
-    report_path = f"{output_prefix}_classification_report.txt"
-    with open(report_path, "w") as f:
-        f.write(report)
+    report_path = f"{output_prefix}_classification_report.csv"
+    report.to_csv(report_path)
 
     click.echo("Modeling artifacts saved!")
     click.echo(f"Confusion matrix saved to: {output_prefix}_confusion_matrix.png")
@@ -95,4 +94,4 @@ if __name__ == "__main__":
     main()
 
 # How to run this script from the root directory:
-# python scripts/04-model.py --input_path data/clean/BankNote_Authentication_Clean.csv --output_prefix results/analysis/BankNote_Authentication_Analysis
+# python scripts/04-modeling.py --input_path data/clean/BankNote_Authentication_Clean.csv --output_prefix results/analysis/BankNote_Authentication_Analysis

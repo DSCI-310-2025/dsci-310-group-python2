@@ -52,5 +52,5 @@ if __name__ == "__main__":
     main()
 
 # How to run this script from the root directory:
-# python scripts/03-eda.py --input_path data/clean/BankNote_Authentication_Clean.csv --output_prefix results/eda/BankNote_Authentication_EDA
+# python scripts/03-visualization.py --input_path data/clean/BankNote_Authentication_Clean.csv --output_prefix results/eda/BankNote_Authentication_EDA
 
