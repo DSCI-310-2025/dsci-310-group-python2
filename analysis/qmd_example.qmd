@@ -6,7 +6,7 @@ editor: source
 execute:
   echo: false
 toc: true
-toc-depth: 3
+toc-depth: 4
 bibliography: references.bib
 ---
 # 
@@ -76,9 +76,10 @@ The variance distributions (@fig-variance) are very different. Both authentic an
 
 The skewness histograms (@fig-skewness) have somewhat different distributions. The fake bills have their mode at around 2.5 while the authentic bills have their mode at around 8. The distributions overlap quite a bit suggesting that skewness is not as big of a driving factor as variance. These histograms will allow us to understand what we should expect with our unknown bill once the bill is identified. We can use these histograms to see if our expectations line up with the unknown bill.
 
-### Data Analysis: KNN Model
+### Data Analysis: Creation of the KNN Model
 
 #### Cross validation
+
 We tried a standard scaler but got better results without it. We decided to use a KNN Model without any scaling.
 
 #### Parameter optimization
