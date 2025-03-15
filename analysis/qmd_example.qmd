@@ -58,6 +58,7 @@ and the following Python packages were used to perform the analysis:
 count_table = pd.read_csv(f"{eda_results}BankNote_Authentication_EDA_count_table.csv")
 Markdown(count_table.to_markdown(index = False))
 ```
+The count between classes in @tbl-count is fairly evenly split. Since there's not a drastic difference between the distribution of classes, we will not do any weighting.
 
 ![Distribution of Entropy Grouped by Authenticity](../results/eda/BankNote_Authentication_EDA_entropy.png){#fig-entropy width=90%}
 
@@ -78,15 +79,13 @@ The skewness histograms (@fig-skewness) have somewhat different distributions. T
 ### Data Analysis: KNN Model
 
 #### Cross validation
-We tried standard scaler but got better results without it.
+We tried a standard scaler but got better results without it. We decided to use a KNN Model without any scaling.
 
 #### Parameter optimization
-
 
 ![KNN Accuracy vs Number of Neighbours](../results/analysis/BankNote_Authentication_Analysis_knn_cv.png){#fig-neighbours width=90%}
 
 Based on the @fig-neighbours graph, even with only one neighbour we are getting the best result. This means we can start by trying to use only one neighbour in our pipeline and try it on the test set.
-
 
 #### Results on the Testing Set
 
@@ -97,16 +96,16 @@ positive_cases = int(count_table.loc[['0'], 'support'].iloc[0])
 negative_cases = int(count_table.loc[['1'], 'support'].iloc[0])
 total_cases = positive_cases + negative_cases
 ```
-![KNN Accuracy vs Number of Neighbours](../results/analysis/BankNote_Authentication_Analysis_confusion_matrix.png){#fig-confusion_matrix width=90%}
+![Confusion Matrix of the KNN Model on the Test Set](../results/analysis/BankNote_Authentication_Analysis_confusion_matrix.png){#fig-confusion_matrix width=90%}
 
 Based on @fig-confusion_matrix, we were able to predict `{python} positive_cases` authentic banknotes and `{python} negative_cases` fake banknotes correctly. 
 ```{python}
 #| label: tbl-classification_report
-#| tbl-cap: Distribution of Banknote Authentication Notes
+#| tbl-cap: Classification Report of the KNN Model on the Test Set
 Markdown(count_table.to_markdown())
 ```
 
-@tbl-classification_report further shows this conclusion. We achieved a score of `{python} test_accuracy`%. This means that we have no error, and we are predicting everything right. Every test sample was classified correctly. There are no misclassifications, which implies that the model perfectly distinguishes between the two classes. The classifier achieved **`{python} test_accuracy`% accuracy** on the test set, with perfect precision, recall, and F1-scores for both classes. 
+@tbl-classification_report further shows this conclusion. We achieved a score of `{python} test_accuracy`%. This means that we have no error, and we are predicting everything right. Every test sample was classified correctly. There are no misclassifications, which implies that the model perfectly distinguishes between the two classes. In conclusion, the classifier achieved **`{python} test_accuracy`% accuracy** on the test set, with perfect precision, recall, and F1-scores for both classes. 
 
 ## Discussion
 ### Analysis of Results
