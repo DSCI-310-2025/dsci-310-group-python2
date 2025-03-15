@@ -44,7 +44,6 @@ def main(input_path, output_prefix):
     plt.plot(neighbors, cv_scores, marker='o')
     plt.xlabel("Number of Neighbors")
     plt.ylabel("Mean CV Accuracy")
-    plt.title("KNN Accuracy vs. Number of Neighbors")
     plt.grid(True)
     
     # Create output directory if needed
@@ -77,18 +76,20 @@ def main(input_path, output_prefix):
     sns.heatmap(cm, annot=True, fmt="d", cmap="Blues")
     plt.xlabel("Predicted")
     plt.ylabel("Actual")
-    plt.title("Confusion Matrix")
     plt.tight_layout()
     plt.savefig(f"{output_prefix}_confusion_matrix.png")
     plt.close()
 
     # Save the classification report to a text file
-    report_path = f"{output_prefix}_classification_report.csv"
-    report.to_csv(report_path)
+    report.to_csv(f"{output_prefix}_classification_report.csv")
+
+    # Save the parameters used for the KNN to a text file
+    KNN_parameters = pd.DataFrame({'best_k': [best_k]})
+    KNN_parameters.to_csv(f"{output_prefix}_KNN_parameters.csv", index=False)
 
     click.echo("Modeling artifacts saved!")
     click.echo(f"Confusion matrix saved to: {output_prefix}_confusion_matrix.png")
-    click.echo(f"Classification report saved to: {report_path}")
+    click.echo(f"Classification report saved to: {output_prefix}_classification_report.csv")
 
 if __name__ == "__main__":
     main()

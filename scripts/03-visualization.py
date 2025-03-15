@@ -39,7 +39,6 @@ def main(input_path, output_prefix):
         sns.histplot(data=df, x=feature, hue='class', element='bars', bins=30, kde=True)
         plt.xlabel(feature.capitalize())
         plt.ylabel("Count")
-        plt.title(f"Distribution of {feature.capitalize()} Grouped by Authenticity")
         plt.legend(title="Class", labels=["1 (Fake)", "0 (Authentic)"])
         plt.tight_layout()
         # Save each figure with a descriptive filename
