@@ -1,3 +1,9 @@
+# ===========================
+# Makefile for Banknote Classification Project
+# This Makefile automates data loading, cleaning, EDA, modeling, and report generation.
+# Run `make all` to execute the entire pipeline.
+# ===========================
+
 .PHONY: all clean eda model report results
 
 all: data/original/BankNote_Authentication.csv \
