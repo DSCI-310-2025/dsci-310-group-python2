@@ -14,6 +14,7 @@ RUN pip install pandas==2.2.3 && \
     pip install seaborn==0.13.2 && \
     pip install scikit-learn==1.6.1 && \
     pip install ucimlrepo==0.0.7 && \
+    pip install click==8.1.8 && \
     ### skip token authentication needed for docker instance 
     echo "c.NotebookApp.token = ''" >> /home/jovyan/.jupyter/jupyter_notebook_config.py && \
     echo "c.NotebookApp.password = ''" >> /home/jovyan/.jupyter/jupyter_notebook_config.py && \
