@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.40">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Willian Ho, Sayana Imash, Danny Pirouz, &amp; Arad Sabet">
+
+<title>Authentic vs Fake Banknote Classification</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="bill-classification-analysis_files/libs/clipboard/clipboard.min.js"></script>
+<script src="bill-classification-analysis_files/libs/quarto-html/quarto.js"></script>
+<script src="bill-classification-analysis_files/libs/quarto-html/popper.min.js"></script>
+<script src="bill-classification-analysis_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="bill-classification-analysis_files/libs/quarto-html/anchor.min.js"></script>
+<link href="bill-classification-analysis_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="bill-classification-analysis_files/libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="bill-classification-analysis_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="bill-classification-analysis_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="bill-classification-analysis_files/libs/bootstrap/bootstrap-8a79a254b8e706d3c925cde0a310d4f0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#summary" id="toc-summary" class="nav-link active" data-scroll-target="#summary">Summary</a>
+  <ul>
+  <li><a href="#background-information" id="toc-background-information" class="nav-link" data-scroll-target="#background-information">Background information</a></li>
+  <li><a href="#research-question" id="toc-research-question" class="nav-link" data-scroll-target="#research-question">Research Question</a></li>
+  <li><a href="#the-dataset" id="toc-the-dataset" class="nav-link" data-scroll-target="#the-dataset">The dataset</a></li>
+  </ul></li>
+  <li><a href="#methods" id="toc-methods" class="nav-link" data-scroll-target="#methods">Methods</a></li>
+  <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results">Results</a>
+  <ul>
+  <li><a href="#exploratory-data-analysis-visualizations" id="toc-exploratory-data-analysis-visualizations" class="nav-link" data-scroll-target="#exploratory-data-analysis-visualizations">Exploratory Data Analysis &amp; Visualizations</a></li>
+  <li><a href="#data-analysis-creation-of-the-knn-model" id="toc-data-analysis-creation-of-the-knn-model" class="nav-link" data-scroll-target="#data-analysis-creation-of-the-knn-model">Data Analysis: Creation of the KNN Model</a>
+  <ul class="collapse">
+  <li><a href="#cross-validation" id="toc-cross-validation" class="nav-link" data-scroll-target="#cross-validation">Cross validation</a></li>
+  <li><a href="#parameter-optimization" id="toc-parameter-optimization" class="nav-link" data-scroll-target="#parameter-optimization">Parameter optimization</a></li>
+  <li><a href="#results-on-the-testing-set" id="toc-results-on-the-testing-set" class="nav-link" data-scroll-target="#results-on-the-testing-set">Results on the Testing Set</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#discussion" id="toc-discussion" class="nav-link" data-scroll-target="#discussion">Discussion</a>
+  <ul>
+  <li><a href="#analysis-of-results" id="toc-analysis-of-results" class="nav-link" data-scroll-target="#analysis-of-results">Analysis of Results</a></li>
+  <li><a href="#future-considerations" id="toc-future-considerations" class="nav-link" data-scroll-target="#future-considerations">Future Considerations</a></li>
+  </ul></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Authentic vs Fake Banknote Classification</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Willian Ho, Sayana Imash, Danny Pirouz, &amp; Arad Sabet </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="summary" class="level2">
+<h2 class="anchored" data-anchor-id="summary">Summary</h2>
+<section id="background-information" class="level3">
+<h3 class="anchored" data-anchor-id="background-information">Background information</h3>
+<p>Counterfeit currency is a global challenge that poses great threat to financial institutions, governments, and even individuals. To combat this, central banks and law enforcement agencies invest billions of dollars annually in anti-counterfeiting measures, such as watermarks, holograms, and security threads. However, while these methods help deter fraud, rapid advancements in printing technology and reproduction techniques have made counterfeiting even more complex and harder to detect <span class="citation" data-cites="US_Banknote_Counterfeits">(<a href="#ref-US_Banknote_Counterfeits" role="doc-biblioref">National Research Council 2006</a>)</span>.</p>
+<p>In Canada, for example, the Department of Justice reports that counterfeit money is one of the most common forms of financial fraud that is continuously adapting to improved security features and law enforcement tactics <span class="citation" data-cites="Canada_Fraud">(<a href="#ref-Canada_Fraud" role="doc-biblioref">Justice Canada 2022</a>)</span>. This ongoing challenge highlights the urgent need for more advanced detection methods that can quickly and accurately identify fraudulent banknotes. One of the most promising solutions is the use of automated detection systems powered by image processing and machine learning. By improving pattern recognition and statistical analysis, these models provide high precision, speed, and efficiency, making them a powerful tool in combating financial fraud <span class="citation" data-cites="Fraud_Prevention">(<a href="#ref-Fraud_Prevention" role="doc-biblioref">Bello and Komolafe 2024</a>)</span>.</p>
+</section>
+<section id="research-question" class="level3">
+<h3 class="anchored" data-anchor-id="research-question">Research Question</h3>
+<p>In this project we are trying to answer the question whether a machine learning model, specifically K-Nearest Neighbors (KNN), can effectively classify banknotes as genuine or counterfeit based on numerical image features.</p>
+</section>
+<section id="the-dataset" class="level3">
+<h3 class="anchored" data-anchor-id="the-dataset">The dataset</h3>
+<p>The dataset we used for this project is called “Banknote Authentication UCI data”, and it was taken from the UCI Machine Learning Repository. This dataset is designed to distinguish between genuine and counterfeit banknotes using features extracted from their images. It comprises of 1372 individual data points that are characterized by four continuous features: variance, skewness, curtosis, entropy, and class. The target variable “class” is a binary value of 1 (counterfeit banknote) or 0 (genuine banknote). These features were extracted using wavelet transform tools applied to 400x400 pixel grayscale images captured by an industrial camera <span class="citation" data-cites="Banknote_Authentication">(<a href="#ref-Banknote_Authentication" role="doc-biblioref">Lohweg 2012</a>)</span>.</p>
+</section>
+</section>
+<section id="methods" class="level2">
+<h2 class="anchored" data-anchor-id="methods">Methods</h2>
+<p>The Python programming language <span class="citation" data-cites="Python">(<a href="#ref-Python" role="doc-biblioref">Van Rossum and Drake 2009</a>)</span> and the following Python packages were used to perform the analysis:</p>
+<ul>
+<li>pandas <span class="citation" data-cites="pandas">(<a href="#ref-pandas" role="doc-biblioref">McKinney 2010</a>)</span></li>
+<li>matplotlib <span class="citation" data-cites="matplotlib">(<a href="#ref-matplotlib" role="doc-biblioref">Hunter 2007</a>)</span></li>
+<li>seaborn <span class="citation" data-cites="seaborn">(<a href="#ref-seaborn" role="doc-biblioref">Waskom 2021</a>)</span></li>
+<li>Quarto <span class="citation" data-cites="Allaire_Quarto_2022">(<a href="#ref-Allaire_Quarto_2022" role="doc-biblioref">Allaire et al. 2022</a>)</span></li>
+<li>click <span class="citation" data-cites="click">(<a href="#ref-click" role="doc-biblioref">Pallets Team 2020</a>)</span></li>
+</ul>
+</section>
+<section id="results" class="level2">
+<h2 class="anchored" data-anchor-id="results">Results</h2>
+<section id="exploratory-data-analysis-visualizations" class="level3">
+<h3 class="anchored" data-anchor-id="exploratory-data-analysis-visualizations">Exploratory Data Analysis &amp; Visualizations</h3>
+<div class="cell" data-execution_count="2">
+<div id="tbl-count" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="2">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-count-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Distribution of Banknote Authentication Notes
+</figcaption>
+<div aria-describedby="tbl-count-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="22">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: right;">class</th>
+<th style="text-align: right;">Count</th>
+<th style="text-align: right;">Percentage</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">762</td>
+<td style="text-align: right;">55.5394</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">610</td>
+<td style="text-align: right;">44.4606</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>The count between classes in <a href="#tbl-count" class="quarto-xref">Table&nbsp;1</a> is fairly evenly split. Since there’s not a drastic difference between the distribution of classes, we will not do any weighting.</p>
+<div id="fig-entropy" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-entropy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../results/eda/BankNote_Authentication_EDA_entropy.png" class="img-fluid figure-img" style="width:90.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-entropy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Distribution of Entropy Grouped by Authenticity
+</figcaption>
+</figure>
+</div>
+<p>The entropy histograms in <a href="#fig-entropy" class="quarto-xref">Figure&nbsp;1</a> have very similar distributions for authentic and fake bills as they both have their modes around the same value and generally follow the same patterns. Since the distributions are very similar, it is very unlikely that entropy is a driving factor in determining authentic or fake bills.</p>
+<div id="fig-curtosis" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-curtosis-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../results/eda/BankNote_Authentication_EDA_curtosis.png" class="img-fluid figure-img" style="width:90.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-curtosis-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Distribution of Curtosis Grouped by Authenticity
+</figcaption>
+</figure>
+</div>
+<p>The same can be said for the curtosis histogram (<a href="#fig-curtosis" class="quarto-xref">Figure&nbsp;2</a>) as authentic and fake bills have similar distributions with their modes around the same value as well. Curtosis is also unlikely to be a driving force.</p>
+<div id="fig-variance" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-variance-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../results/eda/BankNote_Authentication_EDA_variance.png" class="img-fluid figure-img" style="width:90.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-variance-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Distribution of Variance Grouped by Authenticity
+</figcaption>
+</figure>
+</div>
+<p>The variance distributions (<a href="#fig-variance" class="quarto-xref">Figure&nbsp;3</a>) are very different. Both authentic and fake bills have a bell curve distribution with a similar pattern in terms of distribution, but the position where the distribution occurs differs drastically. This suggests that variance is a very strong driving force in determining whether a bill is authentic or fake.</p>
+<div id="fig-skewness" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-skewness-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../results/eda/BankNote_Authentication_EDA_skewness.png" class="img-fluid figure-img" style="width:90.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-skewness-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Distribution of Skewness Grouped by Authenticity
+</figcaption>
+</figure>
+</div>
+<p>The skewness histograms (<a href="#fig-skewness" class="quarto-xref">Figure&nbsp;4</a>) have somewhat different distributions. Fake bills tend to have lower skewness and the mode is noticeably lower for the fake bills compared to the real bills, but the distributions still overlap quite a bit suggesting that skewness is not as big of a driving factor as variance. These histograms will allow us to understand what we should expect with our unknown bill once the bill is identified. We can use these histograms to see if our expectations line up with the unknown bill.</p>
+</section>
+<section id="data-analysis-creation-of-the-knn-model" class="level3">
+<h3 class="anchored" data-anchor-id="data-analysis-creation-of-the-knn-model">Data Analysis: Creation of the KNN Model</h3>
+<section id="cross-validation" class="level4">
+<h4 class="anchored" data-anchor-id="cross-validation">Cross validation</h4>
+<p>We tried a standard scaler but got better results without it. We decided to use a KNN Model without any scaling.</p>
+</section>
+<section id="parameter-optimization" class="level4">
+<h4 class="anchored" data-anchor-id="parameter-optimization">Parameter optimization</h4>
+<div id="fig-neighbours" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-neighbours-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../results/model_results/BankNote_Authentication_mr_knn_cv.png" class="img-fluid figure-img" style="width:90.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-neighbours-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: KNN Accuracy vs Number of Neighbours
+</figcaption>
+</figure>
+</div>
+<p>We will run our KNN model on the earliest number of neighbours that results in the highest accuracy on the training set. <a href="#fig-neighbours" class="quarto-xref">Figure&nbsp;5</a> shows how the number of neighbours affects the accuracy on the training set. Based on this graph we will use 2 neighbours, as it results in the highest training accuracy. This means we can start by experimenting with 2 neighbours in our pipeline and try it on the test set.</p>
+</section>
+<section id="results-on-the-testing-set" class="level4">
+<h4 class="anchored" data-anchor-id="results-on-the-testing-set">Results on the Testing Set</h4>
+<div id="fig-confusion_matrix" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-confusion_matrix-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../results/model_results/BankNote_Authentication_mr_confusion_matrix.png" class="img-fluid figure-img" style="width:90.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-confusion_matrix-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: Confusion Matrix of the KNN Model on the Test Set
+</figcaption>
+</figure>
+</div>
+<p>Based on our confusion matrix from <a href="#fig-confusion_matrix" class="quarto-xref">Figure&nbsp;6</a>, we were able to predict 190 authentic banknotes and 153 fake banknotes correctly.</p>
+<div class="cell" data-execution_count="5">
+<div id="tbl-classification_report" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="5">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-classification_report-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2: Classification Report of the KNN Model on the Test Set
+</figcaption>
+<div aria-describedby="tbl-classification_report-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="25">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">precision</th>
+<th style="text-align: right;">recall</th>
+<th style="text-align: right;">f1-score</th>
+<th style="text-align: right;">support</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">190</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">153</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">accuracy</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">macro avg</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">343</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">weighted avg</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">343</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p><a href="#tbl-classification_report" class="quarto-xref">Table&nbsp;2</a> further shows this conclusion. We achieved a score of 100.0%. This means that we have no error, and we are predicting everything right. Every test sample was classified correctly. There are no misclassifications, which implies that the model perfectly distinguishes between the two classes. In conclusion, the classifier achieved <strong>100.0% accuracy</strong> on the test set, with perfect precision, recall, and F1-scores for both classes.</p>
+</section>
+</section>
+</section>
+<section id="discussion" class="level2">
+<h2 class="anchored" data-anchor-id="discussion">Discussion</h2>
+<section id="analysis-of-results" class="level3">
+<h3 class="anchored" data-anchor-id="analysis-of-results">Analysis of Results</h3>
+<p>The classifier perfectly predicted all 190 real banknotes and 153 fake banknotes in the test set. This is not what we expected to find. While we did expect our model to do well since our input variables likely play a major role in detecting forged banknotes, we did not expect it to perfectly predict every banknote in the test set.</p>
+<p>However, upon further research, this model is fairly consistent with other models. A Gaussian process classifier was able to get 100% accuracy on both the training and test set with only 500 training samples <span class="citation" data-cites="Gaussian_Process_Classifier">(<a href="#ref-Gaussian_Process_Classifier" role="doc-biblioref">Grosse et al. 2018</a>)</span>. A different model using convex optimzation on graphs also managed to achieve an average testing accuracy of 99.03% over 100 randomly generated training sets <span class="citation" data-cites="Graph_Optimization">(<a href="#ref-Graph_Optimization" role="doc-biblioref">Merkurjev et al. 2015</a>)</span>.</p>
+</section>
+<section id="future-considerations" class="level3">
+<h3 class="anchored" data-anchor-id="future-considerations">Future Considerations</h3>
+<p>This result suggests that our current model is identifying all the patterns in the dataset and is able to predict whether or not a banknote is forged or not with 100.0% accuracy. However, this model still needs more testing. We could be overfitting on our available data. Our test set may also not capture all the patterns of a banknote the model might encounter, as it only has 343 samples. This test could have failed to include some rare or outlier patterns the model may encounter if it were tested on a different dataset. It may even be the case that our entire dataset may not be representative of the real world and this could potentially cause our model to perform poorly on unseen data.</p>
+<p>This analysis raises several potential future questions that could evaluate how this model would fare in real world scenarios:</p>
+<ul>
+<li>Would our model still be generalizable for larger or more complex datasets or would it lead to lower accuracy?</li>
+<li>Which of the input features between variance, skewness, kurtosis, and entropy are the most important for authenticating banknotes and by how much?**</li>
+<li>Is there covariance between the input features? Does this covariance make it easier to detect fake banknotes?**</li>
+<li>What are the patterns that make a counterfeit banknote stand out from a genuine banknote? Could a forged banknote be designed to avoid these patterns and not be detected by the classification model?</li>
+</ul>
+</section>
+</section>
+<section id="references" class="level2 unnumbered">
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-Allaire_Quarto_2022" class="csl-entry" role="listitem">
+Allaire, J. J., Charles Teague, Carlos Scheidegger, Yihui Xie, and Christophe Dervieux. 2022. <span>“<span>Quarto</span>.”</span> <a href="https://doi.org/10.5281/zenodo.5960048">https://doi.org/10.5281/zenodo.5960048</a>.
+</div>
+<div id="ref-Fraud_Prevention" class="csl-entry" role="listitem">
+Bello, Oluwabusayo Adijat, and Olufemi Komolafe. 2024. <span>“Artificial Intelligence in Fraud Prevention: Exploring Techniques and Applications Challenges and Opportunities.”</span> <em>Computer Science &amp; IT Research Journal</em>. <a href="https://api.semanticscholar.org/CorpusID:270808704">https://api.semanticscholar.org/CorpusID:270808704</a>.
+</div>
+<div id="ref-Gaussian_Process_Classifier" class="csl-entry" role="listitem">
+Grosse, Kathrin et al. 2018. <span>“Killing Four Birds with One Gaussian Process: Analyzing Test-Time Attack Vectors on Classification.”</span> <em>arXiv: Cryptography and Security</em>. <a href="https://api.semanticscholar.org/CorpusID:67856763">https://api.semanticscholar.org/CorpusID:67856763</a>.
+</div>
+<div id="ref-matplotlib" class="csl-entry" role="listitem">
+Hunter, J. D. 2007. <span>“Matplotlib: A 2D Graphics Environment.”</span> <em>Computing in Science &amp; Engineering</em> 9 (3): 90–95. <a href="https://doi.org/10.1109/MCSE.2007.55">https://doi.org/10.1109/MCSE.2007.55</a>.
+</div>
+<div id="ref-Canada_Fraud" class="csl-entry" role="listitem">
+Justice Canada. 2022. <span>“The Links Between Substance Abuse and Crime in Canada.”</span> <a href="https://www.justice.gc.ca/eng/rp-pr/csj-sjc/crime/rr02_3/p33.html">https://www.justice.gc.ca/eng/rp-pr/csj-sjc/crime/rr02_3/p33.html</a>.
+</div>
+<div id="ref-Banknote_Authentication" class="csl-entry" role="listitem">
+Lohweg, Volker. 2012. <span>“Banknote Authentication.”</span> <a href="https://doi.org/10.24432/C55P57">https://doi.org/10.24432/C55P57</a>.
+</div>
+<div id="ref-pandas" class="csl-entry" role="listitem">
+McKinney, Wes. 2010. <span>“Data Structures for Statistical Computing in Python.”</span> In <em>Proceedings of the 9th Python in Science Conference</em>, edited by Stéfan van der Walt and Jarrod Millman, =51–56.
+</div>
+<div id="ref-Graph_Optimization" class="csl-entry" role="listitem">
+Merkurjev, Ekaterina et al. 2015. <span>“Global Binary Optimization on Graphs for Classification of High-Dimensional Data.”</span> <em>Journal of Mathematical Imaging and Vision</em> 52: 414–35. <a href="https://api.semanticscholar.org/CorpusID:7832907">https://api.semanticscholar.org/CorpusID:7832907</a>.
+</div>
+<div id="ref-US_Banknote_Counterfeits" class="csl-entry" role="listitem">
+National Research Council. 2006. <em>Is That Real? Identification and Assessment of the Counterfeiting Threat for u.s. Banknotes</em>. The National Academies Press. <a href="https://nap.nationalacademies.org/catalog/11638/is-that-real-identification-and-assessment-of-the-counterfeiting-threat">https://nap.nationalacademies.org/catalog/11638/is-that-real-identification-and-assessment-of-the-counterfeiting-threat</a>.
+</div>
+<div id="ref-click" class="csl-entry" role="listitem">
+Pallets Team. 2020. <em>Click</em>. <a href="https://click.palletsprojects.com/">https://click.palletsprojects.com/</a>.
+</div>
+<div id="ref-Python" class="csl-entry" role="listitem">
+Van Rossum, Guido, and Fred L. Drake. 2009. <em>Python 3 Reference Manual</em>. Scotts Valley, CA: CreateSpace.
+</div>
+<div id="ref-seaborn" class="csl-entry" role="listitem">
+Waskom, Michael L. 2021. <span>“Seaborn: Statistical Data Visualization.”</span> <em>Journal of Open Source Software</em> 6 (60): 3021. <a href="https://doi.org/10.21105/joss.03021">https://doi.org/10.21105/joss.03021</a>.
+</div>
+</div></section></div></main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
