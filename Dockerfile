@@ -18,9 +18,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
     
     
-RUN curl -LO https://github.com/quarto-dev/quarto-cli/releases/download/v1.6.42/quarto-1.6.42-linux-amd64.deb \
-    && gdebi --non-interactive quarto-linux-amd64.deb \
-    && rm -f quarto-linux-amd64.deb
+RUN curl -LO https://github.com/quarto-dev/quarto-cli/releases/download/v1.6.42/quarto-1.6.42-linux-amd64.deb
     ### download libraries needed for analysis
 RUN pip install pandas==2.2.3 \ matplotlib==3.10.1 \ seaborn==0.13.2 \ scikit-learn==1.6.1 \
     ucimlrepo==0.0.7 \ click==8.1.8 \ tabulate==0.9.0 && \
