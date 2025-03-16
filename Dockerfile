@@ -2,19 +2,24 @@
 ### note: this docker library also installs jupyter 4.0.7
 FROM jupyter/base-notebook:python-3.11
 
-### copy local files to jupyter instance
-COPY . /home/jovyan/
-
 ### give user permission to modify files in docker instance
 USER root
 
-### download libraries to use for analysis
-RUN pip install pandas==2.2.3 && \
-    pip install matplotlib==3.10.1 && \
-    pip install seaborn==0.13.2 && \
-    pip install scikit-learn==1.6.1 && \
-    pip install ucimlrepo==0.0.7 && \
-    pip install click==8.1.8 && \
+### copy local files to jupyter instance
+COPY . /home/jovyan
+
+### Install system dependencies (including make)
+RUN apt-get update && apt-get install -y \
+    python3.11 \
+    make \
+    curl \
+    python3-pip \
+    gdebi-core \
+    && rm -rf /var/lib/apt/lists/* && \
+    curl -LO https://github.com/quarto-dev/quarto-cli/releases/download/v1.6.42/quarto-1.6.42-linux-amd64.deb && \
+    ### download libraries needed for analysis
+    pip install pandas==2.2.3 \ matplotlib==3.10.1 \ seaborn==0.13.2 \ scikit-learn==1.6.1 \
+    ucimlrepo==0.0.7 \ click==8.1.8 \ tabulate==0.9.0 && \
     ### skip token authentication needed for docker instance 
     echo "c.NotebookApp.token = ''" >> /home/jovyan/.jupyter/jupyter_notebook_config.py && \
     echo "c.NotebookApp.password = ''" >> /home/jovyan/.jupyter/jupyter_notebook_config.py && \

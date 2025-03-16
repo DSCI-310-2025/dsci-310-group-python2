@@ -18,7 +18,7 @@ Build a new docker instance: <br>
 Run the docker instance: <br>
 `docker run -it --rm -v "${PWD}":/home/joyvan -p 8888:8888 bill-analysis`
 
-Go to http://localhost:8888/ and run the analysis file `bill-classification-analysis.ipynb`
+Go to http://localhost:8888/ and go to the terminal and type `make all` to run the analysis. If you want to redo the analysis, you can run `make clean` to reset all the resulting files.
 
 #### List of Dependencies Needed to Run
 
