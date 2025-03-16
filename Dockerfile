@@ -8,6 +8,9 @@ COPY . /home/jovyan/
 ### give user permission to modify files in docker instance
 USER root
 
+### Install system dependencies (including make)
+RUN apt-get update && apt-get install -y make && rm -rf /var/lib/apt/lists/*
+
 ### download libraries to use for analysis
 RUN pip install pandas==2.2.3 && \
     pip install matplotlib==3.10.1 && \
@@ -19,3 +22,7 @@ RUN pip install pandas==2.2.3 && \
     echo "c.NotebookApp.token = ''" >> /home/jovyan/.jupyter/jupyter_notebook_config.py && \
     echo "c.NotebookApp.password = ''" >> /home/jovyan/.jupyter/jupyter_notebook_config.py && \
     chown -R jovyan /home/jovyan
+
+#Dowload Quarto 
+
+#ENTRYPOINT ["make", "all"]
