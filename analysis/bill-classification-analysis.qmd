@@ -9,14 +9,12 @@ toc: true
 toc-depth: 4
 bibliography: references.bib
 ---
-# 
-
 ```{python}
 import pandas as pd
 from IPython.display import Markdown, display
 from tabulate import tabulate
 
-analysis_results = "../results/analysis/"
+analysis_results = "../results/model_results/"
 eda_results = "../results/eda/"
 ```
 
@@ -82,24 +80,24 @@ We tried a standard scaler but got better results without it. We decided to use 
 
 #### Parameter optimization
 ```{python}
-KNN_parameters = pd.read_csv(f"{analysis_results}BankNote_Authentication_Analysis_KNN_parameters.csv")
+KNN_parameters = pd.read_csv(f"{analysis_results}BankNote_Authentication_mr_KNN_parameters.csv")
 best_k = int(KNN_parameters['best_k'].iloc[0])
 ```
 
-![KNN Accuracy vs Number of Neighbours](../results/analysis/BankNote_Authentication_Analysis_knn_cv.png){#fig-neighbours width=90%}
+![KNN Accuracy vs Number of Neighbours](../results/model_results/BankNote_Authentication_mr_knn_cv.png){#fig-neighbours width=90%}
 
 We will run our KNN model on the earliest number of neighbours that results in the highest accuracy on the training set. @fig-neighbours shows how the number of neighbours affects the accuracy on the training set. Based on this graph we will use `{python} best_k` neighbours, as it results in the highest training accuracy. This means we can start by experimenting with `{python} best_k` neighbours in our pipeline and try it on the test set.
 
 #### Results on the Testing Set
 
 ```{python}
-count_table = pd.read_csv(f"{analysis_results}BankNote_Authentication_Analysis_classification_report.csv", index_col=0, dtype={'f1-score': 'float', 'support': 'int'})
+count_table = pd.read_csv(f"{analysis_results}BankNote_Authentication_mr_classification_report.csv", index_col=0, dtype={'f1-score': 'float', 'support': 'int'})
 test_accuracy = float(count_table.loc[['accuracy'], 'f1-score'].iloc[0] * 100)
 positive_cases = int(count_table.loc[['0'], 'support'].iloc[0])
 negative_cases = int(count_table.loc[['1'], 'support'].iloc[0])
 total_cases = positive_cases + negative_cases
 ```
-![Confusion Matrix of the KNN Model on the Test Set](../results/analysis/BankNote_Authentication_Analysis_confusion_matrix.png){#fig-confusion_matrix width=90%}
+![Confusion Matrix of the KNN Model on the Test Set](../results/model_results/BankNote_Authentication_mr_confusion_matrix.png){#fig-confusion_matrix width=90%}
 
 Based on our confusion matrix from @fig-confusion_matrix, we were able to predict `{python} positive_cases` authentic banknotes and `{python} negative_cases` fake banknotes correctly. 
 ```{python}
