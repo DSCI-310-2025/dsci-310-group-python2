@@ -18,26 +18,7 @@ Build a new docker instance: <br>
 Run the docker instance: <br>
 `docker run -it --rm -v "${PWD}":/home/joyvan -p 8888:8888 bill-analysis`
 
-Go to http://localhost:8888/ and run the analysis file `bill-classification-analysis.ipynb`
-
-### Makefile
-
-This project is automated using a Makefile. You can run individual steps or the entire pipeline using make all. You can also execute indivisual instances by calling: 
-   -  make data/original/BankNote_Authentication.csv this loads your data from a repository 
-   -  make data/clean/BankNote_Authentication_Clean.csv this cleans and filters your data in roder to get   specififc variables
-    - These lines of code output speciffic figures or table you will need in exploratory data analysis part
-      make results/EDA/BankNote_Authentication_eda_count_table.csv \ 
-      make results/EDA/BankNote_Authentication_eda_variance.png \
-      make results/EDA/BankNote_Authentication_eda_skewness.png \
-      make results/EDA/BankNote_Authentication_eda_curtosis.png \
-      make results/EDA/BankNote_Authentication_eda_entropy.png
-    - These lines of code outputs individual KNN model results:
-        results/model_results/BankNote_Authentication_mr_knn_cv.png \
-        results/model_results/BankNote_Authentication_mr_confusion_matrix.png  \
-        results/model_results/BankNote_Authentication_mr_classification_report.txt
-    - This code renders the quarto file into pdf and html:
-        reports/bill-classification-analysis.pdf
-        reports/bill-classification-analysis.html
+Go to http://localhost:8888/ and go to the terminal and type `make all` to run the analysis. If you want to redo the analysis, you can run `make clean` to reset all the resulting files.
 
 #### List of Dependencies Needed to Run
 
