@@ -20,6 +20,8 @@ Run the docker instance: <br>
 
 Go to http://localhost:8888/ and go to the terminal and type `make all` to run the analysis. If you want to redo the analysis, you can run `make clean` to reset all the resulting files.
 
+To view the resulting analysis, go to the `analysis` directory and open the `bill-classification-analysis.html` file. This will show the results and discussion of the bill classification analysis.
+
 #### List of Dependencies Needed to Run
 
 - python (version 3.11)
