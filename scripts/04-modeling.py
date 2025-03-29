@@ -1,8 +1,12 @@
 import click
 import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from src import ensure_output_directory
 import os
 from sklearn.model_selection import train_test_split
 import sys
+
 
 # Add the project root to the Python path to be able to import the module
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -41,6 +45,15 @@ def main(input_path, output_prefix):
     )
     
     # Create output directory if needed
+
+    ensure_output_directory(output_prefix)
+        
+    plt.savefig(f"{output_prefix}_knn_cv.png")
+    plt.close()
+
+    # Choose the best k (using the maximum CV accuracy)
+    best_k = neighbors[cv_scores.index(max(cv_scores))]
+
     out_dir = os.path.dirname(output_prefix)
     if out_dir and not os.path.exists(out_dir):
         os.makedirs(out_dir)
