@@ -3,3 +3,5 @@
 /.ipynb_checkpoints
 /scripts/.ipynb_checkpoints
 /analysis/.ipynb_checkpoints
+/tests/__pycache__
+/src/__pycache__
