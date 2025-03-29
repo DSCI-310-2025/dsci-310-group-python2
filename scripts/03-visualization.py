@@ -2,7 +2,7 @@ import click
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-import os
+from src import ensure_output_directory
 
 @click.command()
 @click.option("--input_path", required=True, help="Path to the cleaned dataset.")
@@ -23,9 +23,7 @@ def main(input_path, output_prefix):
     df = pd.read_csv(input_path)
 
     # Create output directory if it does not exist
-    out_dir = os.path.dirname(output_prefix)
-    if out_dir and not os.path.exists(out_dir):
-        os.makedirs(out_dir)
+    ensure_output_directory(output_prefix)
 
     # Create and save count table (class proportions)
     count_table = df.groupby('class').size().reset_index(name='Count')

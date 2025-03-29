@@ -2,7 +2,8 @@ import click
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-import os
+from src import ensure_output_directory
+
 
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import train_test_split, cross_val_score
@@ -47,9 +48,7 @@ def main(input_path, output_prefix):
     plt.grid(True)
     
     # Create output directory if needed
-    out_dir = os.path.dirname(output_prefix)
-    if out_dir and not os.path.exists(out_dir):
-        os.makedirs(out_dir)
+    ensure_output_directory(output_prefix)
         
     plt.savefig(f"{output_prefix}_knn_cv.png")
     plt.close()
