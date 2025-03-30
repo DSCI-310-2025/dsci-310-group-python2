@@ -60,4 +60,4 @@ def test_all_missing_value(sample_df_with_all_rows_missing,capfd):
 
     assert result.empty
     assert "missing values" in out.lower()
-    assert "Missing values dropped!" in out.lower()
+    assert "dropped!" in out.lower()
