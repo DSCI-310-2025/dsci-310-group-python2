@@ -2,7 +2,6 @@ import click
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-from src import ensure_output_directory
 import os
 from sklearn.model_selection import train_test_split
 import sys
@@ -17,6 +16,10 @@ from src.modeling_utils import (
     plot_knn_cv,
     train_knn_model,
     evaluate_model
+)
+
+from src.ensure_output_directory import (
+    ensure_output_directory
 )
 
 @click.command()
@@ -50,13 +53,6 @@ def main(input_path, output_prefix):
         
     plt.savefig(f"{output_prefix}_knn_cv.png")
     plt.close()
-
-    # Choose the best k (using the maximum CV accuracy)
-    best_k = neighbors[cv_scores.index(max(cv_scores))]
-
-    out_dir = os.path.dirname(output_prefix)
-    if out_dir and not os.path.exists(out_dir):
-        os.makedirs(out_dir)
     
     # Step 1: Evaluate different k values using cross-validation
     neighbors, cv_scores, best_k = evaluate_knn_cv(X_train, y_train)

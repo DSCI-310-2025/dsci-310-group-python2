@@ -2,7 +2,20 @@ import click
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-from src import ensure_output_directory
+import sys
+import os
+
+# Add the project root to the Python path to be able to import the module
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+                
+from src.ensure_output_directory import (
+    ensure_output_directory
+)
+
+from src.visualization_utils import (
+    plot_histogram,
+    create_count_table
+)
 
 @click.command()
 @click.option("--input_path", required=True, help="Path to the cleaned dataset.")
@@ -22,26 +35,13 @@ def main(input_path, output_prefix):
     # Load data
     df = pd.read_csv(input_path)
 
-    # Create output directory if it does not exist
-    ensure_output_directory(output_prefix)
-
     # Create and save count table (class proportions)
-    count_table = df.groupby('class').size().reset_index(name='Count')
-    count_table['Percentage'] = 100 * count_table['Count'] / len(df)
-    count_table.to_csv(f"{output_prefix}_count_table.csv", index=False)
+    create_count_table(df, "class", output_prefix)
 
     # List of features to visualize
     features = ['variance', 'skewness', 'curtosis', 'entropy']
     for feature in features:
-        plt.figure(figsize=(8, 6))
-        sns.histplot(data=df, x=feature, hue='class', element='bars', bins=30, kde=True)
-        plt.xlabel(feature.capitalize())
-        plt.ylabel("Count")
-        plt.legend(title="Class", labels=["1 (Fake)", "0 (Authentic)"])
-        plt.tight_layout()
-        # Save each figure with a descriptive filename
-        plt.savefig(f"{output_prefix}_{feature}.png")
-        plt.close()
+        plot_histogram(df, feature, "class", ['A (Tan Bars)', 'B (Blue Bars)'], output_prefix)
 
     click.echo(f"EDA artifacts saved with prefix: {output_prefix}")
 
