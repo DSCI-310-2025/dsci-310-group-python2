@@ -25,4 +25,9 @@ def check_missing_value(bill_data):
 
         return bill_data
 
+    # Check if data has the right type
+    if not isinstance(bill_data, pd.DataFrame):
+        raise TypeError("Input must be a pandas DataFrame.")
+
+
     return bill_data

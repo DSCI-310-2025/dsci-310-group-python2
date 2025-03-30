@@ -2,6 +2,7 @@ import os
 import pytest
 import sys
 import pandas as pd
+import numpy as np
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src")))
 
@@ -32,6 +33,10 @@ def sample_df_with_all_rows_missing():
         "amount": [None, None, None]
     })
 
+@pytest.fixture
+#create test dataset with all missing values
+def sample_not_df():
+    return np.array([1,2,3])
 
 #test if the dataframe is clean
 def test_no_missing_value(sample_df_no_missing,capfd):
