@@ -16,6 +16,7 @@ def sample_df_no_missing():
         "amount": [25.5, 30.0]
     })
 
+@pytest.fixture
 # create test dataset with one missing value 
 def sample_df_with_missing():
     return pd.DataFrame({
@@ -23,12 +24,14 @@ def sample_df_with_missing():
         "amount": [25.5, None, 30.0]
     })
 
+@pytest.fixture
 #create test dataset with all missing values
 def sample_df_with_all_rows_missing():
     return pd.DataFrame({
         "name": [None, None, None],
         "amount": [None, None, None]
     })
+
 
 #test if the dataframe is clean
 def test_no_missing_value(sample_df_no_missing,capfd):
@@ -38,8 +41,9 @@ def test_no_missing_value(sample_df_no_missing,capfd):
     out, _ = capfd.readouterr()
     assert "missing values" not in out.lower()
 
+
 #test if the dataframe has one row with missign value
-def test_one_missing_value(sample_df_no_missing,capfd):
+def test_one_missing_value(sample_df_with_missing,capfd):
     result = check_missing_value(sample_df_with_missing.copy())
     out, _ = capfd.readouterr()
 

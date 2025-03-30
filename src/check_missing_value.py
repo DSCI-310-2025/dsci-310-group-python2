@@ -25,4 +25,4 @@ def check_missing_value(bill_data):
 
         return bill_data
 
-    return missing_values
+    return bill_data
