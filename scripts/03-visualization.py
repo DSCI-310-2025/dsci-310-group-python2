@@ -13,7 +13,8 @@ from src.ensure_output_directory import (
 )
 
 from src.visualization_utils import (
-    plot_histogram
+    plot_histogram,
+    create_count_table
 )
 
 @click.command()
@@ -34,18 +35,13 @@ def main(input_path, output_prefix):
     # Load data
     df = pd.read_csv(input_path)
 
-    # Create output directory if it does not exist
-    ensure_output_directory(output_prefix)
-
     # Create and save count table (class proportions)
-    count_table = df.groupby('class').size().reset_index(name='Count')
-    count_table['Percentage'] = 100 * count_table['Count'] / len(df)
-    count_table.to_csv(f"{output_prefix}_count_table.csv", index=False)
+    create_count_table(df, "class", output_prefix)
 
     # List of features to visualize
     features = ['variance', 'skewness', 'curtosis', 'entropy']
     for feature in features:
-        plot_histogram(df, feature, ['A (Tan Bars)', 'B (Blue Bars)'], output_prefix)
+        plot_histogram(df, feature, "class", ['A (Tan Bars)', 'B (Blue Bars)'], output_prefix)
 
     click.echo(f"EDA artifacts saved with prefix: {output_prefix}")
 
