@@ -31,7 +31,8 @@ To view the resulting analysis, go to the `analysis` directory and open the `bil
 - seaborn (version 0.13.2)
 - scikit-learn (version 1.6.1)
 - ucimlrepo (version 0.0.7)
-- click(version 8.1.8)
+- click (version 8.1.8)
+- pytest (version 8.3.5)
 
 #### Licenses
 
