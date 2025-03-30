@@ -33,7 +33,7 @@ def get_test_images_dir():
     test_dir = os.path.join(os.path.dirname(__file__), 'test_images/')
     return test_dir
 
-
+# tests for histogram plotting function
 class TestPlotHistogram:
     # test if histogram compiles
     def test_plot_histogram_basic(self, sample_data):
@@ -56,6 +56,16 @@ class TestPlotHistogram:
         feature = 'feature1'
         with pytest.raises(ValueError, match="Could not interpret value `missing_class` for `hue`. An entry with this name does not appear in `data`"):
             plot_histogram(sample_data, feature, "missing_class")
+
+        # empty dataframe case
+        empty_df = pd.DataFrame(columns=["feature1", 'lacking_class'])
+        with pytest.raises(ValueError, match="`dataset` input should have multiple elements."):
+            plot_histogram(empty_df, feature, "lacking_class")
+
+        # dataframe with only one item
+        single_item_df = pd.DataFrame({"feature1": [1.0], "lacking_class": ["A"]})
+        with pytest.raises(ValueError, match="`dataset` input should have multiple elements."):
+            plot_histogram(single_item_df, feature, "lacking_class")
 
     # test if histogram saves to directory and matches test image
     def test_plot_histogram_with_saving(self, sample_data, get_test_images_dir):
@@ -115,7 +125,7 @@ class TestPlotHistogram:
             img2 = image.imread(generated_image)
             assert img1.shape != img2.shape, "Test failed: Images have the same sizes when they should have different figure sizes"
 
-
+# tests for create_count_table function
 class TestCreateCountTable:
     # test if count table is created & compiles
     def test_basic_count_table(self, sample_data):
@@ -145,4 +155,10 @@ class TestCreateCountTable:
             create_count_table(additional_class_sample, "class", temp_dir)
             additional_class_table =  pd.read_csv(generated_table)
             assert additional_class_table.shape == (3, 3), f"Shape mismatch: Expected (3, 3), but got {additional_class_table.shape}"
+
+            # check case containing no rows
+            empty_df = pd.DataFrame(columns=['lacking_class'])
+            create_count_table(empty_df, "lacking_class", temp_dir)
+            empty_class_table = pd.read_csv(generated_table)
+            assert empty_class_table.shape == (0, 3), f"Shape mismatch: Expected (0, 3), but got {empty_class_table.shape}"
 
