@@ -1,5 +1,9 @@
 import click
 import pandas as pd
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+from src.check_missing_value import check_missing_value
 
 @click.command()
 @click.option("--input_path", required=True, help="Path to the input dataset.")
@@ -11,14 +15,7 @@ def main(input_path, output_path):
     bill_data = pd.read_csv(input_path)
 
     # Check for missing values
-    missing_values = bill_data.isna().sum().sum()
-    if missing_values:
-        click.echo(f"Found {missing_values} missing values in the data.")
-
-        # Drop missing values
-        bill_data.dropna(inplace=True)
-        click.echo("Missing values dropped!")
-
+    bill_data = check_missing_value(bill_data)
     # Save the cleaned data
     bill_data.to_csv(output_path, index=False)
     click.echo(f"Cleaned data saved to {output_path}!")
