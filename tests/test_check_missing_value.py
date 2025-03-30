@@ -66,3 +66,11 @@ def test_all_missing_value(sample_df_with_all_rows_missing,capfd):
     assert result.empty
     assert "missing values" in out.lower()
     assert "dropped!" in out.lower()
+
+#test if it has the right data type 
+def test_wrong_type(sample_not_df):
+       
+       with pytest.raises(TypeError):
+           check_missing_value(sample_not_df)
+
+

@@ -13,7 +13,10 @@ def check_missing_value(bill_data):
        If the dataset has NAN values, function prints a message in the terminal and filters the data to remove the NAN values
 
     """
-        
+        # Check if data has the right type
+    if not isinstance(bill_data, pd.DataFrame):
+        raise TypeError("Input must be a pandas DataFrame.")
+    
     # Check for missing values
     missing_values = bill_data.isna().sum().sum()
 
@@ -24,10 +27,6 @@ def check_missing_value(bill_data):
         click.echo("Missing values dropped!")
 
         return bill_data
-
-    # Check if data has the right type
-    if not isinstance(bill_data, pd.DataFrame):
-        raise TypeError("Input must be a pandas DataFrame.")
 
 
     return bill_data
