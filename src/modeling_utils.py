@@ -5,6 +5,7 @@ import os
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import cross_val_score
 from sklearn.metrics import confusion_matrix, classification_report
+from src import ensure_output_directory
 
 def evaluate_knn_cv(X_train, y_train, k_range=range(1, 26)):
     """
@@ -77,10 +78,7 @@ def plot_knn_cv(neighbors, cv_scores, output_path=None, figsize=(10, 6)):
     plt.grid(True)
     
     if output_path:
-        # Create output directory if needed
-        out_dir = os.path.dirname(output_path)
-        if out_dir and not os.path.exists(out_dir):
-            os.makedirs(out_dir)
+        ensure_output_directory.ensure_output_directory(output_path)
             
         plt.savefig(output_path)
     
@@ -157,10 +155,7 @@ def evaluate_model(model, X_test, y_test, output_path=None, figsize=(6, 5)):
     plt.tight_layout()
     
     if output_path:
-        # Create output directory if needed
-        out_dir = os.path.dirname(output_path)
-        if out_dir and not os.path.exists(out_dir):
-            os.makedirs(out_dir)
+        ensure_output_directory.ensure_output_directory(output_path)
             
         plt.savefig(output_path)
     

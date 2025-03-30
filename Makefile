@@ -15,7 +15,7 @@ all: data/original/BankNote_Authentication.csv \
 	results/EDA/BankNote_Authentication_eda_entropy.png \
 	results/model_results/BankNote_Authentication_mr_knn_cv.png \
 	results/model_results/BankNote_Authentication_mr_confusion_matrix.png  \
-	results/model_results/BankNote_Authentication_mr_classification_report.txt \
+	results/model_results/BankNote_Authentication_mr_classification_report.csv \
 	reports/bill-classification-analysis.html
 
 # Ensure results directory exists
@@ -43,7 +43,7 @@ results/EDA/BankNote_Authentication_eda_entropy.png: data/clean/BankNote_Authent
 # Step 4: Perform modeling using 04-modeling.py
 results/model_results/BankNote_Authentication_mr_knn_cv.png \
 results/model_results/BankNote_Authentication_mr_confusion_matrix.png  \
-results/model_results/BankNote_Authentication_mr_classification_report.txt: data/clean/BankNote_Authentication_Clean.csv scripts/04-modeling.py
+results/model_results/BankNote_Authentication_mr_classification_report.csv: data/clean/BankNote_Authentication_Clean.csv scripts/04-modeling.py
 	mkdir -p results/model_results
 	python scripts/04-modeling.py --input_path=data/clean/BankNote_Authentication_Clean.csv --output_prefix=results/model_results/BankNote_Authentication_mr
 
