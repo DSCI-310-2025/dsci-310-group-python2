@@ -20,7 +20,7 @@ def check_missing_value(bill_data):
     if missing_values:
         click.echo(f"Found {missing_values} missing values in the data.")
         # Drop missing values
-        bill_data.dropna(inplace=True)
+        bill_data.dropna(inplace=True) #drops any rows with Nan
         click.echo("Missing values dropped!")
 
         return bill_data
