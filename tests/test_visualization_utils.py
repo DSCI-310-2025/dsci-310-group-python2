@@ -54,8 +54,8 @@ class TestPlotHistogram:
 
         # missing target_variable
         feature = 'feature1'
-        with pytest.raises(NameError, match="name 'missing_class' is not defined"):
-            plot_histogram(missing_class, feature, "missing_class")
+        with pytest.raises(ValueError, match="Could not interpret value `missing_class` for `hue`. An entry with this name does not appear in `data`"):
+            plot_histogram(sample_data, feature, "missing_class")
 
     # test if histogram saves to directory and matches test image
     def test_plot_histogram_with_saving(self, sample_data, get_test_images_dir):
@@ -66,9 +66,9 @@ class TestPlotHistogram:
             output_prefix = os.path.join(temp_dir, 'with_saving_figure')
             plot_histogram(sample_data, feature, "class", output_prefix=output_prefix)
             generated_image = f"{output_prefix}_{feature}.png"
-            assert os.path.exists(generated_image), f"Output file {output_file} was not created"
+            assert os.path.exists(generated_image), f"Output file {generated_image} was not created"
             diff = compare_images(resulting_image, generated_image, tol=1e-2)
-            assert diff is None, f"Images are different: {diff}"
+            assert diff is None, f"Test failed: Images are different when should have the same default parameters: {diff}"
 
     # test if histogram with custom labels matches test image
     def test_plot_histogram_with_labels(self, sample_data, get_test_images_dir):
@@ -83,14 +83,14 @@ class TestPlotHistogram:
             # test matching labels
             plot_histogram(sample_data, feature, "class", labels=labels,  output_prefix=output_prefix)
             generated_image = f"{output_prefix}_{feature}.png"
-            assert os.path.exists(generated_image), f"Output file {output_file} was not created"
+            assert os.path.exists(generated_image), f"Output file {generated_image} was not created"
             diff = compare_images(resulting_image, generated_image, tol=0)
-            assert diff is None, f"Images are different: {diff}"
+            assert diff is None, f"Test failed: Images are different when they should have the same label: {diff}"
 
             # test differing labels
             plot_histogram(sample_data, feature, "class", labels=labels2,  output_prefix=output_prefix)
             diff = compare_images(resulting_image, generated_image, tol=0)
-            assert diff is not None, f"Test failed: Images should differ in labels but they don't. {diff}"
+            assert diff is not None, f"Test failed: Images are the same when they should differ in labels"
 
     # test if histogram with custom figsizes matches test image
     def test_plot_histogram_with_figsize(self, sample_data, get_test_images_dir):
@@ -105,15 +105,15 @@ class TestPlotHistogram:
             # test matching figsizes
             plot_histogram(sample_data, feature, "class", labels=labels,  output_prefix=output_prefix, figsize=figsize)
             generated_image = f"{output_prefix}_{feature}.png"
-            assert os.path.exists(generated_image), f"Output file {output_file} was not created"
+            assert os.path.exists(generated_image), f"Output file {generated_image} was not created"
             diff = compare_images(resulting_image, generated_image, tol=0)
-            assert diff is None, f"Images are different: {diff}"
+            assert diff is None, f"Test failed: Images are different when they should have the same figure size: {diff}"
             
             # test differing figsizes
             plot_histogram(sample_data, feature, "class", labels=labels,  output_prefix=output_prefix)
             img1 = image.imread(resulting_image)
             img2 = image.imread(generated_image)
-            assert img1.shape != img2.shape, "Images have the same sizes"
+            assert img1.shape != img2.shape, "Test failed: Images have the same sizes when they should have different figure sizes"
 
 
 class TestCreateCountTable:
