@@ -22,4 +22,7 @@ def check_missing_value(bill_data):
         # Drop missing values
         bill_data.dropna(inplace=True)
         click.echo("Missing values dropped!")
-    return bill_data
+
+        return bill_data
+
+    return missing_values
