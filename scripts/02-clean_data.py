@@ -3,7 +3,7 @@ import pandas as pd
 import sys
 import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-from banknote_utils import check_missing_value
+from banknote_utils.check_missing_value import check_missing_value
 
 @click.command()
 @click.option("--input_path", required=True, help="Path to the input dataset.")
