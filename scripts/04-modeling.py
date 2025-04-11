@@ -11,16 +11,15 @@ import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 # Import our abstracted functions
-from src.modeling_utils import (
+from banknote_utils.modeling_utils import (
     evaluate_knn_cv,
     plot_knn_cv,
     train_knn_model,
     evaluate_model
 )
 
-from src.ensure_output_directory import (
-    ensure_output_directory
-)
+from banknote_utils.ensure_output_directory import ensure_output_directory
+
 
 @click.command()
 @click.option("--input_path", required=True, help="Path to the cleaned dataset.")
