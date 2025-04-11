@@ -8,11 +8,11 @@ import os
 # Add the project root to the Python path to be able to import the module
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
                 
-from src.ensure_output_directory import (
+from banknote_utils import (
     ensure_output_directory
 )
 
-from src.visualization_utils import (
+from banknote_utils import (
     plot_histogram,
     create_count_table
 )
