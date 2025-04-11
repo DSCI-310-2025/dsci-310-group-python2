@@ -4,6 +4,10 @@
 
 The goal of this project is to determine whether a number of random bank notes can be accurately classified as authentic or fake. Through the use of a training set extracted from this dataset, we were able to create a KNN classification model and test our testing set to determine our accuracy. We then ran our unknown bank notes through our model and created visualizations to understand our bank notes better.
 
+## Brief overview of the workflow
+
+All the data is stored in the data repository. Orginal data is in data/original, while the filtered data is stored in data/clean. Then, scripts in scripts repository perform the exploratory data analysis (EDA), helping to clean the data, visualize the patterns and model the data. Results are stored in results folder which has two subdirectories for the plots and the model data output. Finally, generated reports in quarto and html format are stored in reports folder. 
+
 ### Steps to Run the Analysis
 
 First, run a git terminal and clone the repository: <br>
