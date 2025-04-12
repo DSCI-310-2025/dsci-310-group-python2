@@ -157,7 +157,7 @@ div.csl-indent {
 Table&nbsp;1: Distribution of Banknote Authentication Notes
 </figcaption>
 <div aria-describedby="tbl-count-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="27">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="2">
 <table class="do-not-create-environment cell caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
@@ -270,7 +270,7 @@ Figure&nbsp;6: Confusion Matrix of the KNN Model on the Test Set
 Table&nbsp;2: Classification Report of the KNN Model on the Test Set
 </figcaption>
 <div aria-describedby="tbl-classification_report-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="30">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="5">
 <table class="do-not-create-environment cell caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
@@ -337,7 +337,7 @@ Table&nbsp;2: Classification Report of the KNN Model on the Test Set
 </section>
 <section id="future-considerations" class="level3">
 <h3 class="anchored" data-anchor-id="future-considerations">Future Considerations</h3>
-<p>This result suggests that our current model is identifying all the patterns in the dataset and is able to predict whether or not a banknote is forged or not with 100.0% accuracy. However, this model still needs more testing. We could be overfitting on our available data. Our test set may also not capture all the patterns of a banknote the model might encounter, as it only has 343 samples. This test could have failed to include some rare or outlier patterns the model may encounter if it were tested on a different dataset. It may even be the case that our entire dataset may not be representative of the real world and this could potentially cause our model to perform poorly on unseen data.</p>
+<p>This result suggests that our current model is identifying all the patterns in the dataset and is able to predict whether or not a banknote is forged or not with 100.0% accuracy. However, this model still needs more testing. We could be overfitting on our available data or have a data leakage. We added a data validation check that detects anomalous correlations between the target variable compared to the explanatory variables to minimize potential data leakage, but this may not be enough to prevent it. In terms of overfitting, our test set may also not capture all the patterns of a banknote the model might encounter, as it only has 343 samples. This test could have failed to include some rare or outlier patterns the model may encounter if it were tested on a different dataset. It is possible that the test set may be contaminated in a way that was not accounted for, leading the model to have already seen the test set during training. It may even be the case that our entire dataset is too small of a sample, which makes the dataset not be representative of the real world. This could potentially cause our model to perform poorly on unseen data.</p>
 <p>This analysis raises several potential future questions that could evaluate how this model would fare in real world scenarios:</p>
 <ul>
 <li>Would our model still be generalizable for larger or more complex datasets or would it lead to lower accuracy?</li>
