@@ -31,6 +31,10 @@ def main(input_path, output_prefix):
       
     Each figure is saved using the provided output prefix.
     """
+    # check correct file format for input path
+    if not input_path.lower().endswith('.csv'):
+        raise ValueError("Input file must have a '.csv' extension")
+    
     # Load data
     df = pd.read_csv(input_path)
 

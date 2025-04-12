@@ -8,6 +8,10 @@ from ucimlrepo import fetch_ucirepo
 def main(repo_id, output_path):
     """Load data from UCI repository and save it locally."""
 
+    # check correct file format
+    if not output_path.lower().endswith('.csv'):
+        raise ValueError("Output file must have a '.csv' extension")
+    
     # Load the dataset
     bill_data = fetch_ucirepo(id=repo_id).data["original"]
 

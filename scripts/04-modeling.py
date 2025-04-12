@@ -34,6 +34,10 @@ def main(input_path, output_prefix):
       - Trains a KNN classifier and evaluates its performance.
       - Saves a CV accuracy plot, confusion matrix plot, and a classification report.
     """
+    # check correct file format for input path
+    if not input_path.lower().endswith('.csv'):
+        raise ValueError("Input file must have a '.csv' extension")
+        
     # Load cleaned dataset
     df = pd.read_csv(input_path)
     
