@@ -127,6 +127,3 @@ def main(input_path, output_prefix):
 
 if __name__ == "__main__":
     main()
-
-# How to run this script from the root directory:
-# python scripts/04-modeling.py --input_path data/clean/BankNote_Authentication_Clean.csv --output_prefix results/analysis/BankNote_Authentication_Analysis
