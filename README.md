@@ -6,7 +6,7 @@ The goal of this project is to determine whether a number of random bank notes c
 
 ## Brief overview of the workflow
 
-All the data is stored in the data repository. Orginal data is in data/original, while the filtered data is stored in data/clean. Then, scripts in scripts repository perform the exploratory data analysis (EDA), helping to clean the data, visualize the patterns and model the data. Results are stored in results folder which has two subdirectories for the plots and the model data output. Finally, generated reports in quarto and html format are stored in reports folder. 
+All the data is stored in the data repository. Orginal data is in data/original, while the filtered data is stored in data/clean. Then, scripts in scripts repository perform the exploratory data analysis (EDA), helping to clean the data, visualize the patterns and model the data. Results are stored in results folder which has two subdirectories for the plots and the model data output. Finally, generated reports in quarto and html format are stored in reports folder in root directory. 
 
 ### Steps to Run the Analysis
 
