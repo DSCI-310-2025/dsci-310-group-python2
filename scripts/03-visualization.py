@@ -21,20 +21,37 @@ from banknote_utils.visualization_utils import (
 @click.option("--output_prefix", required=True, help="Prefix for the output EDA artifacts (figures and tables).")
 def main(input_path, output_prefix):
     """
-    Perform exploratory data analysis on the banknote dataset and save visualizations.
-    
-    This script creates a count table and histograms for the following features:
-      - variance
-      - skewness
-      - curtosis
-      - entropy
-      
-    Each figure is saved using the provided output prefix.
+    Script: 03-visualization.py
+
+    Description:
+    This script performs exploratory data analysis (EDA) on the cleaned banknote dataset. It generates and saves:
+    - A count table showing class distributions
+    - Histograms for four numeric features: variance, skewness, curtosis, and entropy
+
+    Usage:
+        python scripts/03-visualization.py \
+            --input_path data/clean/BankNote_Authentication_Clean.csv \
+            --output_prefix results/eda/BankNote_Authentication_EDA
+
+    Arguments:
+    --input_path: Path to the cleaned CSV dataset.
+    --output_prefix: Prefix used to name and save all generated visualizations and tables.
+
+    Output:
+    - A CSV count table saved to the specified output path.
+    - Four histogram image files (one per feature), saved using the given prefix.
+    - A terminal message confirming where the artifacts were saved.
+
+    Dependencies:
+    - click
+    - pandas
+    - seaborn
+    - matplotlib
+    - banknote_utils.visualization_utils
     """
     # check correct file format for input path
     if not input_path.lower().endswith('.csv'):
         raise ValueError("Input file must have a '.csv' extension")
-    
     # Load data
     df = pd.read_csv(input_path)
 

@@ -26,13 +26,45 @@ from banknote_utils.ensure_output_directory import ensure_output_directory
 @click.option("--output_prefix", required=True, help="Prefix for the output modeling artifacts (figures and reports).")
 def main(input_path, output_prefix):
     """
-    Perform modeling on the banknote dataset using KNN and save results.
-    
-    The script:
-      - Splits the data into training and test sets.
-      - Uses cross-validation to select the best value for k.
-      - Trains a KNN classifier and evaluates its performance.
-      - Saves a CV accuracy plot, confusion matrix plot, and a classification report.
+    Script: 04-modeling.py
+
+    Description:
+    This script performs classification modeling on the cleaned banknote dataset using a K-Nearest Neighbors (KNN) algorithm.
+    It includes hyperparameter tuning via cross-validation, model training, evaluation, and artifact saving.
+
+    Steps performed:
+    1. Splits the dataset into training and test sets (stratified).
+    2. Uses cross-validation to determine the best value of k.
+    3. Trains a KNN model using the selected k.
+    4. Evaluates the model on the test set.
+    5. Saves evaluation results including:
+       - Cross-validation accuracy plot
+       - Confusion matrix
+       - Classification report
+       - Best k parameter used
+
+    Usage:
+        python scripts/04-modeling.py \
+            --input_path data/clean/BankNote_Authentication_Clean.csv \
+            --output_prefix results/analysis/BankNote_Authentication_Analysis
+
+    Arguments:
+    --input_path: Path to the cleaned dataset CSV.
+    --output_prefix: Prefix used for saving all output artifacts.
+
+    Output:
+    - A cross-validation plot (PNG)
+    - A confusion matrix plot (PNG)
+    - A classification report (CSV)
+    - A CSV file recording the selected best k value
+
+    Dependencies:
+    - click
+    - pandas
+    - matplotlib
+    - seaborn
+    - scikit-learn
+    - banknote_utils.modeling_utils
     """
     # check correct file format for input path
     if not input_path.lower().endswith('.csv'):
