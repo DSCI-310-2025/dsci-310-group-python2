@@ -33,6 +33,10 @@ Dependencies:
     """
 
 
+    # check correct file format
+    if not output_path.lower().endswith('.csv'):
+        raise ValueError("Output file must have a '.csv' extension")
+    
     # Load the dataset
     bill_data = fetch_ucirepo(id=repo_id).data["original"]
 

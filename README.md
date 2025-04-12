@@ -37,6 +37,7 @@ To view the resulting analysis, go to the `analysis` directory and open the `bil
 - ucimlrepo (version 0.0.7)
 - click (version 8.1.8)
 - pytest (version 8.3.5)
+- pandera (version 0.22.1)
 - banknote-knn-utils (version 0.1.6)
 
 #### Licenses
