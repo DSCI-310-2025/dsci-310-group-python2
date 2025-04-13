@@ -6,33 +6,30 @@ from ucimlrepo import fetch_ucirepo
 @click.option("--repo_id", default=267, help="ID of the UCI repository dataset to load.")
 @click.option("--output_path", required=True, help="Path to save the loaded dataset.")
 def main(repo_id, output_path):
-
     """
-Script: 01-load_data.py
-Description:
-This script loads a dataset from the UCI Machine Learning Repository using the `ucimlrepo` package and saves it as a CSV file to a specified location.
+    Script: 01-load_data.py
+    Description:
+    This script loads a dataset from the UCI Machine Learning Repository using the `ucimlrepo` package and saves it as a CSV file to a specified location.
 
-It is designed to be run from the command line using `click`.
+    It is designed to be run from the command line using `click`.
 
-Usage:
-    python scripts/01-load_data.py --repo_id 267 --output_path data/original/BankNote_Authentication.csv
+    Usage:
+        python scripts/01-load_data.py --repo_id 267 --output_path data/original/BankNote_Authentication.csv
 
-Arguments:
---repo_id: Optional. The ID of the UCI dataset to fetch. Default is 267.
---output_path: Required. The file path (including filename) to save the dataset as a CSV.
+    Arguments:
+    --repo_id: Optional. The ID of the UCI dataset to fetch. Default is 267.
+    --output_path: Required. The file path (including filename) to save the dataset as a CSV.
 
-Output:
-- A CSV file containing the original dataset.
-- The first 5 rows printed to the console.
-- A message confirming successful save.
+    Output:
+    - A CSV file containing the original dataset.
+    - The first 5 rows printed to the console.
+    - A message confirming successful save.
 
-Dependencies:
-- click
-- pandas
-- ucimlrepo
+    Dependencies:
+    - click
+    - pandas
+    - ucimlrepo
     """
-
-
     # check correct file format
     if not output_path.lower().endswith('.csv'):
         raise ValueError("Output file must have a '.csv' extension")
@@ -48,6 +45,3 @@ Dependencies:
 
 if __name__ == "__main__":
     main()
-
-## How to run this script from root directory
-# python scripts/01-load_data.py --repo_id 267 --output_path data/original/BankNote_Authentication.csv

@@ -12,29 +12,29 @@ from pandera import Check
 @click.option("--output_path", required=True, help="Path to save the cleaned dataset.")
 def main(input_path, output_path):
     """
-Script: 02-clean_data.py
+    Script: 02-clean_data.py
 
-Description:
-This script reads a dataset from a specified CSV file, checks for missing values using a helper function,
-and saves the cleaned dataset to a new location. It is intended to be run from the command line using Click.
+    Description:
+    This script reads a dataset from a specified CSV file, checks for missing values using a helper function,
+    and saves the cleaned dataset to a new location. It is intended to be run from the command line using Click.
 
-Usage:
-    python scripts/02-clean_data.py --input_path data/original/BankNote_Authentication.csv --output_path data/clean/BankNote_Authentication_Clean.csv
+    Usage:
+        python scripts/02-clean_data.py --input_path data/original/BankNote_Authentication.csv --output_path data/clean/BankNote_Authentication_Clean.csv
 
-Arguments:
---input_path: Path to the input CSV file.
---output_path: Path to save the cleaned CSV file.
+    Arguments:
+    --input_path: Path to the input CSV file.
+    --output_path: Path to save the cleaned CSV file.
 
-Output:
-- A cleaned version of the dataset saved to the specified output path.
-- A message confirming the output location is printed to the terminal.
+    Output:
+    - A cleaned version of the dataset saved to the specified output path.
+    - A message confirming the output location is printed to the terminal.
 
-Dependencies:
-- click
-- pandas
-- banknote_utils.check_missing_value
+    Dependencies:
+    - click
+    - pandas
+    - pandera
+    - banknote_utils.check_missing_value
     """
-
     # check correct file format for input path
     if not input_path.lower().endswith('.csv'):
         raise ValueError("Input file must have a '.csv' extension")
@@ -84,8 +84,11 @@ Dependencies:
 
 def check_class_imbalance(df: pd.DataFrame, min_class_proportion: float = 0.4):
     """
-    Check for class imbalances in the DataFrame and
+    Function to check for class imbalances in the DataFrame and
     ensure no class has a proportion less than the specified threshold for class imbalances
+
+    Usage:
+        check_class_imbalance(df, 0.4)
 
     Parameters:
     - df: pandas DataFrame
@@ -94,6 +97,9 @@ def check_class_imbalance(df: pd.DataFrame, min_class_proportion: float = 0.4):
     Output:
     - ValueError: If any column exceeds the missing data threshold.
     - Returns True and passes otherwise
+    
+    Dependencies:
+    - pandas
     """
     class_counts = df["class"].value_counts(normalize=True)
     minority_class_proportion = class_counts.min()
@@ -103,10 +109,13 @@ def check_class_imbalance(df: pd.DataFrame, min_class_proportion: float = 0.4):
 
 def check_no_high_correlation(df: pd.DataFrame, threshold: float = 0.9):
     """
-    Check for correlations in the DataFrame and
+    Function to check for correlations in the DataFrame and
     ensure no pair of exploratory/target variables have a correlation above
     the given threshold for correlation values
 
+    Usage:
+        check_no_high_correlation(df, 0.8)
+    
     Parameters:
     - df: pandas DataFrame
     - threshold: float (default 0.9), the maximum correlation each pair of variables can have
@@ -114,6 +123,9 @@ def check_no_high_correlation(df: pd.DataFrame, threshold: float = 0.9):
     Output:
     - ValueError: If any column exceeds the 
     - Returns True and passes otherwise
+    
+    Dependencies:
+    - pandas
     """
     corr_matrix = df.corr()
     high_corr_pairs = []
@@ -130,7 +142,11 @@ def check_no_high_correlation(df: pd.DataFrame, threshold: float = 0.9):
 
 def check_missing_data(df, threshold=0.01):
     """
-    Check for missing data in the DataFrame and ensure no column exceeds the specified threshold for missing values.
+    Function to check for missing data in the DataFrame and 
+    ensure no column exceeds the specified threshold for missing values.
+    
+    Usage:
+        check_missing_data(df, 0.0)
 
     Parameters:
     - df: pandas DataFrame
@@ -139,6 +155,9 @@ def check_missing_data(df, threshold=0.01):
     Output:
     - ValueError: If any column exceeds the missing data threshold or an empty observation exists
     - Returns True and passes otherwise
+    
+    Dependencies:
+    - pandas
     """
     # Calculate the percentage of missing values for each column
     missing_percentage = df.isnull().mean()
@@ -157,6 +176,3 @@ def check_missing_data(df, threshold=0.01):
 
 if __name__ == "__main__":
     main()
-
-# How to run this script from root directory
-# python scripts/02-clean_data.py --input_path data/original/BankNote_Authentication.csv --output_path data/clean/BankNote_Authentication_Clean.csv

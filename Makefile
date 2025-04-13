@@ -6,8 +6,7 @@
 
 .PHONY: all clean EDA model report results
 
-all: test \
-	data/original/BankNote_Authentication.csv \
+all: data/original/BankNote_Authentication.csv \
 	data/clean/BankNote_Authentication_Clean.csv \
  	results/eda/BankNote_Authentication_EDA_count_table.csv \
 	results/eda/BankNote_Authentication_EDA_variance.png \
@@ -18,10 +17,6 @@ all: test \
 	results/model_results/BankNote_Authentication_mr_confusion_matrix.png  \
 	results/model_results/BankNote_Authentication_mr_classification_report.csv \
 	reports/bill-classification-analysis.html
-
-# run tests
-test:
-	pytest
 
 # Ensure results directory exists
 results:
