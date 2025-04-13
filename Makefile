@@ -13,6 +13,7 @@ all: data/original/BankNote_Authentication.csv \
 	results/eda/BankNote_Authentication_EDA_skewness.png \
 	results/eda/BankNote_Authentication_EDA_curtosis.png \
 	results/eda/BankNote_Authentication_EDA_entropy.png \
+	results/eda/BankNote_Authentication_EDA_p_values.csv \
 	results/model_results/BankNote_Authentication_mr_knn_cv.png \
 	results/model_results/BankNote_Authentication_mr_confusion_matrix.png  \
 	results/model_results/BankNote_Authentication_mr_classification_report.csv \
@@ -36,12 +37,15 @@ results/eda/BankNote_Authentication_EDA_count_table.csv \
 results/eda/BankNote_Authentication_EDA_variance.png \
 results/eda/BankNote_Authentication_EDA_skewness.png \
 results/eda/BankNote_Authentication_EDA_curtosis.png \
-results/eda/BankNote_Authentication_EDA_entropy.png: data/clean/BankNote_Authentication_Clean.csv scripts/03-visualization.py
+results/eda/BankNote_Authentication_EDA_entropy.png \
+results/eda/BankNote_Authentication_EDA_p_values.csv: data/clean/BankNote_Authentication_Clean.csv scripts/03-visualization.py
 	mkdir -p results/eda
 	python scripts/03-visualization.py --input_path=data/clean/BankNote_Authentication_Clean.csv --output_prefix=results/eda/BankNote_Authentication_EDA
 
 # Step 4: Perform modeling using 04-modeling.py
 results/model_results/BankNote_Authentication_mr_knn_cv.png \
+results/model_results/BankNote_Authentication_Analysis_shap_plot_1.png \
+results/model_results/BankNote_Authentication_Analysis_shap_plot_2.png \
 results/model_results/BankNote_Authentication_mr_confusion_matrix.png  \
 results/model_results/BankNote_Authentication_mr_classification_report.csv: data/clean/BankNote_Authentication_Clean.csv scripts/04-modeling.py
 	mkdir -p results/model_results
