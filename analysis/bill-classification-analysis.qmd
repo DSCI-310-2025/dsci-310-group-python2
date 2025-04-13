@@ -72,6 +72,18 @@ The variance distributions (@fig-variance) are very different. Both authentic an
 
 The skewness histograms (@fig-skewness) have somewhat different distributions. Fake bills tend to have lower skewness and the mode is noticeably lower for the fake bills compared to the real bills, but the distributions still overlap quite a bit suggesting that skewness is not as big of a driving factor as variance. These histograms will allow us to understand what we should expect with our unknown bill once the bill is identified. We can use these histograms to see if our expectations line up with the unknown bill.
 
+```{python}
+#| label: tbl-p_values
+#| tbl-cap: P-values for the explanatory variables
+#| 
+p_value = 0.05
+p_value_percentage = p_value * 100
+p_values = pd.read_csv(f"{eda_results}BankNote_Authentication_EDA_p_values.csv")
+Markdown(p_values.to_markdown(index = False))
+```
+
+For our hypothesis test, the null hypothesis assumes that there is no effect or significant differences between the two classes. We will set the default so that p-values below `{python} p_value` suggest strong evidence against the null hypothesis. Based on @tbl-p_values, variance, entropy, and curtosis have p-values below 0.05. We can reject the null hypothesis at a `{python} p_value_percentage`% significance level, meaning that all of variance entropy, and curtosis are all likely significant in predicting the authenticity of a banknote. The skewness is the only value way above the `{python} p_value` p-value threshold. This suggests that skewness isn't significant in predicting the authenticity of a bank note, while the other 3 variables are.
+
 ### Data Analysis: Creation of the KNN Model
 
 #### Cross validation
@@ -107,6 +119,12 @@ Markdown(count_table.to_markdown())
 ```
 
 @tbl-classification_report further shows this conclusion. We achieved a score of `{python} test_accuracy`%. This means that we have no error, and we are predicting everything right. Every test sample was classified correctly. There are no misclassifications, which implies that the model perfectly distinguishes between the two classes. In conclusion, the classifier achieved **`{python} test_accuracy`% accuracy** on the test set, with perfect precision, recall, and F1-scores for both classes. 
+
+![SHAP plot for Authentic Banknote](../results/model_results/BankNote_Authentication_mr_shap_plot_1.png){#fig-shap_1 width=90%}
+
+![SHAP plot for Fake Banknote](../results/model_results/BankNote_Authentication_mr_shap_plot_2.png){#fig-shap_2 width=90%}
+
+@fig-shap_1 and @fig-shap_2 show an example of how impactful each explanatory variable was to predict the class via a SHAP plot. In both cases, variance is the most important indicator of the class while entropy is the least important.
 
 ## Discussion
 ### Analysis of Results

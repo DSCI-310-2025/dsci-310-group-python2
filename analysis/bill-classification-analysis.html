@@ -157,7 +157,7 @@ div.csl-indent {
 Table&nbsp;1: Distribution of Banknote Authentication Notes
 </figcaption>
 <div aria-describedby="tbl-count-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="2">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="14">
 <table class="do-not-create-environment cell caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
@@ -229,6 +229,46 @@ Figure&nbsp;4: Distribution of Skewness Grouped by Authenticity
 </figure>
 </div>
 <p>The skewness histograms (<a href="#fig-skewness" class="quarto-xref">Figure&nbsp;4</a>) have somewhat different distributions. Fake bills tend to have lower skewness and the mode is noticeably lower for the fake bills compared to the real bills, but the distributions still overlap quite a bit suggesting that skewness is not as big of a driving factor as variance. These histograms will allow us to understand what we should expect with our unknown bill once the bill is identified. We can use these histograms to see if our expectations line up with the unknown bill.</p>
+<div class="cell" data-execution_count="3">
+<div id="tbl-p_values" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="3">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-p_values-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2: P-values for the explanatory variables
+</figcaption>
+<div aria-describedby="tbl-p_values-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="15">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Feature</th>
+<th style="text-align: right;">p-value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">variance</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">skewness</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">curtosis</td>
+<td style="text-align: right;">6.5e-09</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">entropy</td>
+<td style="text-align: right;">0.385968</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>For our hypothesis test, the null hypothesis assumes that there is no effect or significant differences between the two classes. We will set the default so that p-values below 0.05 suggest strong evidence against the null hypothesis. Based on <a href="#tbl-p_values" class="quarto-xref">Table&nbsp;2</a>, variance, entropy, and curtosis have p-values below 0.05. We can reject the null hypothesis at a 5.0% significance level, meaning that all of variance entropy, and curtosis are all likely significant in predicting the authenticity of a banknote. The skewness is the only value way above the 0.05 p-value threshold. This suggests that skewness isn’t significant in predicting the authenticity of a bank note, while the other 3 variables are.</p>
 </section>
 <section id="data-analysis-creation-of-the-knn-model" class="level3">
 <h3 class="anchored" data-anchor-id="data-analysis-creation-of-the-knn-model">Data Analysis: Creation of the KNN Model</h3>
@@ -263,14 +303,14 @@ Figure&nbsp;6: Confusion Matrix of the KNN Model on the Test Set
 </figure>
 </div>
 <p>Based on our confusion matrix from <a href="#fig-confusion_matrix" class="quarto-xref">Figure&nbsp;6</a>, we were able to predict 190 authentic banknotes and 153 fake banknotes correctly.</p>
-<div class="cell" data-execution_count="5">
-<div id="tbl-classification_report" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="5">
+<div class="cell" data-execution_count="6">
+<div id="tbl-classification_report" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="6">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-classification_report-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;2: Classification Report of the KNN Model on the Test Set
+Table&nbsp;3: Classification Report of the KNN Model on the Test Set
 </figcaption>
 <div aria-describedby="tbl-classification_report-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="5">
+<div class="cell-output cell-output-display cell-output-markdown" data-execution_count="18">
 <table class="do-not-create-environment cell caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
@@ -324,7 +364,28 @@ Table&nbsp;2: Classification Report of the KNN Model on the Test Set
 </figure>
 </div>
 </div>
-<p><a href="#tbl-classification_report" class="quarto-xref">Table&nbsp;2</a> further shows this conclusion. We achieved a score of 100.0%. This means that we have no error, and we are predicting everything right. Every test sample was classified correctly. There are no misclassifications, which implies that the model perfectly distinguishes between the two classes. In conclusion, the classifier achieved <strong>100.0% accuracy</strong> on the test set, with perfect precision, recall, and F1-scores for both classes.</p>
+<p><a href="#tbl-classification_report" class="quarto-xref">Table&nbsp;3</a> further shows this conclusion. We achieved a score of 100.0%. This means that we have no error, and we are predicting everything right. Every test sample was classified correctly. There are no misclassifications, which implies that the model perfectly distinguishes between the two classes. In conclusion, the classifier achieved <strong>100.0% accuracy</strong> on the test set, with perfect precision, recall, and F1-scores for both classes.</p>
+<div id="fig-shap_1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-shap_1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../results/model_results/BankNote_Authentication_mr_shap_plot_1.png" class="img-fluid figure-img" style="width:90.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-shap_1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7: SHAP plot for Authentic Banknote
+</figcaption>
+</figure>
+</div>
+<div id="fig-shap_2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-shap_2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../results/model_results/BankNote_Authentication_mr_shap_plot_2.png" class="img-fluid figure-img" style="width:90.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-shap_2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8: SHAP plot for Fake Banknote
+</figcaption>
+</figure>
+</div>
+<p><a href="#fig-shap_1" class="quarto-xref">Figure&nbsp;7</a> and <a href="#fig-shap_2" class="quarto-xref">Figure&nbsp;8</a> show an example of how impactful each explanatory variable was to predict the class via a SHAP plot. In both cases, variance is the most important indicator of the class while entropy is the least important.</p>
 </section>
 </section>
 </section>
@@ -337,7 +398,7 @@ Table&nbsp;2: Classification Report of the KNN Model on the Test Set
 </section>
 <section id="future-considerations" class="level3">
 <h3 class="anchored" data-anchor-id="future-considerations">Future Considerations</h3>
-<p>This result suggests that our current model is identifying all the patterns in the dataset and is able to predict whether or not a banknote is forged or not with 100.0% accuracy. However, this model still needs more testing. We could be overfitting on our available data or have a data leakage. We added a data validation check that detects anomalous correlations between the target variable compared to the explanatory variables to minimize potential data leakage, but this may not be enough to prevent it. In terms of overfitting, our test set may also not capture all the patterns of a banknote the model might encounter, as it only has 343 samples. This test could have failed to include some rare or outlier patterns the model may encounter if it were tested on a different dataset. It is possible that the test set may be contaminated in a way that was not accounted for, leading the model to have already seen the test set during training. It may even be the case that our entire dataset is too small of a sample, which makes the dataset not be representative of the real world. This could potentially cause our model to perform poorly on unseen data.</p>
+<p>This result suggests that our current model is identifying all the patterns in the dataset and is able to predict whether or not a banknote is forged or not with 100.0% accuracy. However, this model still needs more testing. We could be overfitting on our available data or have a data leakage. We added a data validation check that detects anomalous correlations between the target variable compared to the explanatory variables to minimize potential data leakage, but this may not be enough to prevent it. In terms of overfitting, our test set may also not capture all the patterns of a banknote the model might encounter, as it only has 343 samples. This test could have failed to include some rare or outlier patterns the model may encounter if it were tested on a different dataset. It is also possible that the test set may be contaminated in a way that was not accounted for, leading the model to have already seen the test set during training. It may even be the case that our entire dataset is too small of a sample, which makes the dataset not be representative of the real world. This could potentially cause our model to perform poorly on unseen data.</p>
 <p>This analysis raises several potential future questions that could evaluate how this model would fare in real world scenarios:</p>
 <ul>
 <li>Would our model still be generalizable for larger or more complex datasets or would it lead to lower accuracy?</li>

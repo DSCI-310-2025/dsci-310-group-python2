@@ -5,6 +5,7 @@ import seaborn as sns
 import os
 from sklearn.model_selection import train_test_split
 import sys
+import shap
 
 
 # Add the project root to the Python path to be able to import the module
@@ -46,7 +47,7 @@ def main(input_path, output_prefix):
     Usage:
         python scripts/04-modeling.py \
             --input_path data/clean/BankNote_Authentication_Clean.csv \
-            --output_prefix results/analysis/BankNote_Authentication_Analysis
+            --output_prefix results/model_results/BankNote_Authentication_Analysis
 
     Arguments:
     --input_path: Path to the cleaned dataset CSV.
@@ -56,6 +57,7 @@ def main(input_path, output_prefix):
     - A cross-validation plot (PNG)
     - A confusion matrix plot (PNG)
     - A classification report (CSV)
+    - Two Shap value plots for each class (PNG)
     - A CSV file recording the selected best k value
 
     Dependencies:
@@ -114,6 +116,20 @@ def main(input_path, output_prefix):
     
     click.echo(f"Test set accuracy: {model_results['accuracy']}")
     
+    # perform shap analysis on model
+    explainer = shap.KernelExplainer(final_knn.predict_proba, X_train)
+    shap_values = explainer.shap_values(X_test)
+    # shap.initjs()
+    # exp = shap.Explanation(shap_values[0], explainer.expected_value[0], X)
+    
+    shap.force_plot(explainer.expected_value[0], shap_values[0][:, 0], X_test.iloc[0,:], matplotlib=True, show=False)
+    plt.savefig(f"{output_prefix}_shap_plot_1.png", format="png", bbox_inches='tight')
+    plt.close()
+    
+    shap.force_plot(explainer.expected_value[1], shap_values[2][:, 0], X_test.iloc[2,:], matplotlib=True, show=False)
+    plt.savefig(f"{output_prefix}_shap_plot_2.png", format="png", bbox_inches='tight')
+    plt.close()
+
     # Save the classification report to a CSV file
     model_results['classification_report'].to_csv(f"{output_prefix}_classification_report.csv")
     
@@ -122,6 +138,8 @@ def main(input_path, output_prefix):
     KNN_parameters.to_csv(f"{output_prefix}_KNN_parameters.csv", index=False)
     
     click.echo("Modeling artifacts saved!")
+    click.echo(f"First SHAP result saved to: {output_prefix}_shap_plot_1.png")
+    click.echo(f"Second SHAP result saved to: {output_prefix}_shap_plot_2.png")
     click.echo(f"Confusion matrix saved to: {output_prefix}_confusion_matrix.png")
     click.echo(f"Classification report saved to: {output_prefix}_classification_report.csv")
 
